@@ -1,0 +1,10 @@
+<?php
+	session_start();
+	unset($_SESSION['usuario_id']);
+	unset($_SESSION['usuario_nivel']);
+	unset($_SESSION['usuario_login']);
+	unset($_SESSION['usuario_password']);
+	session_destroy();
+	header("Location:mod_login/index.php");
+	exit;
+?>
