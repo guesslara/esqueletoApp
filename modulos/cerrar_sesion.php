@@ -1,9 +1,18 @@
 <?php
 	session_start();
-	unset($_SESSION['usuario_id']);
-	unset($_SESSION['usuario_nivel']);
-	unset($_SESSION['usuario_login']);
-	unset($_SESSION['usuario_password']);
+	include("../includes/txtApp.php");	
+	unset($txtApp['session']['name']);	
+	unset($txtApp['session']['nivelUsuario']);
+	unset($txtApp['session']['loginUsuario']);
+	unset($txtApp['session']['passwordUsuario']);
+	unset($txtApp['session']['idUsuario']);
+	unset($txtApp['session']['nombreUsuario']);
+	unset($txtApp['session']['apellidoUsuario']);
+	unset($txtApp['session']['origenSistemaUsuario']);
+	unset($txtApp['session']['origenSistemaUsuarioNombre']);
+	unset($txtApp['session']['cambiarPassUsuario']);
+	unset($txtApp['session']['sexoUsuario']);
+	unset($txtApp['session']['nominaUsuario']);
 	session_destroy();
 	header("Location:mod_login/index.php");
 	exit;

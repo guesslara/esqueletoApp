@@ -1,9 +1,10 @@
 <?
 	/*
+	 *Clase para poder enlazar las acciones del usuario con el modulo
 	*/
 	require_once("../../includes/config.inc.php");
 	require_once("../../clases/conexion/conexion.php");
-	
+	require_once("../../clases/verificaUsuario/verificaUsuario.php");
 	class modeloUsuarios{
 		private $conexion;		
 		
@@ -19,32 +20,374 @@
 			}
 		}//fin construct
 		
-	public function listarImagen(){		
+		function leer_fichero_completo($nombre_fichero){						
+			$pI=""; $pF="";			
+			$texto = file_get_contents($nombre_fichero); //Leemos y guardamos en $texto el archivo texto.txt
+			
+			$pI=strpos($texto,"/*");
+			$pF=strpos($texto,"*/");
+			//echo $pI."<br>".$pF."<br>";
+			if($pI=="" || $pF==""){
+				echo "El archivo no contiene las cabeceras de comentarios";
+			}else{
+				$texto = nl2br($texto); //Reemplazamos $texto con un nuevo $texto, pero cambiando los saltos de linea ( ) por un salto de linea en html (br)
+				$texto=str_replace("/*","|",$texto);
+				$texto=str_replace("*/","|",$texto);
+				$nvoTexto=explode("|",$texto);
+				//echo "<pre>".print_r($nvoTexto)."</pre>";
+				echo $nvoTexto[1];
+			}
+			
+		}	
+		
+		public function verModulosSistema(){
+			$path="../../modulos"; $path2="../modulos";
+			$directorio=dir($path);
+			
+?>
+			<div style="position: absolute;width: 99.3%;height: 99.3%;border: 1px solid #000;margin: 2px;">
+				<div style="float: left;width: 55%;height: 98%;margin: 2px;border: 1px solid #ccc;background: #f0f0f0;overflow: auto;">
+					<div style="height:25px; padding:5px;">Modulos del Sistema</div>
+<?	
+			while ($archivo = $directorio->read()){
+				if(substr($archivo,0,4)=="mod_"){
+					$path3=$path."/".$archivo;
+					$directorio1=dir($path3);
+?>
+					<div style="height: 150px;width: 250px;float: left;padding: 5px;border: 1px solid #CCC;background: #fff;margin: 5px;position: relative;">
+<?
+					echo "<div style='height:20px;padding:5px;margin-bottom:3px;font-weight:bold;border:1px solid #000;'>->&nbsp;".$path2."/".$archivo."</div>";
+					echo "<div style='border:0px solid #ff0000;height:117px;overflow-y: auto;overflow-x: hidden;'>";
+					while($archivo1 = $directorio1->read()){
+						if($archivo1 !="_notes" && $archivo1 != "." && $archivo1 != ".."){
+							echo "<div style='height:auto;margin-left:25px;margin-bottom:5px;color:blue;border:0px solid #ff0000;'>--><a href='#' onclick='leerArchivo(\"".$path3."/".$archivo1."\")' style='color:blue;text-decoration:none;'>".$archivo1."</a></div>";	
+						}						
+					}
+					echo "</div>";
+?>
+					</div>					
+<?				
+				}	   
+			}
+?>			
+				</div>
+				<div id="contenidoArchivo" style="float: left;width: 42%;height: 98%;margin: 2px;border: 1px solid #ccc;background: #fff;overflow: auto;"></div>
+			</div>
+<?					
+			$directorio->close();
+		}
+		
+		public function guardarModificacionMenuTitulo($nombreMenuTitulo,$numeroMenuAct,$idElementoAct){
+			$sqlActMenu="UPDATE gruposmods set modulo='".$nombreMenuTitulo."',numeroMenu='".$numeroMenuAct."' WHERE id='".$idElementoAct."'";
+			$resActMenu=mysql_query($sqlActMenu,$this->conexion);
+			if(mysql_affected_rows() >= 1){
+				echo "<script type='text/javascript'> alert('Informacion actualizada'); mostrarOpcionesMenu(); </script>";
+			}else{
+				echo "<script type='text/javascript'> alert('Ocurrieron errores al actualizar o no se hicieron cambios en la informacion'); mostrarOpcionesMenu();</script>";
+			}
+		}
+		
+		public function modificaMenuTitulo($idMenuTitulo){
+			$sqlMenuTitulo="SELECT * FROM gruposmods WHERE id='".$idMenuTitulo."'";
+			$resMenutitulo=mysql_query($sqlMenuTitulo,$this->conexion);
+			$rowMenuTitulo=mysql_fetch_array($resMenutitulo);
+?>
+			<input type="hidden" name="txtIdElementoMenuTitulo" id="txtIdElementoMenuTitulo" value="<?=$idMenuTitulo;?>">
+			<table border="0" cellpadding="1" cellspacing="1" width="480" style="margin: 10px;font-size: 12px;">
+				<tr>
+					<td colspan="2" style="height: 20px;padding: 5px;background: #000;color: #fff;">Modificar Informaci&oacute;n Men&uacute;:</td>
+				</tr>
+				<tr>
+					<td style="width: 100px;height: 20px;padding: 5px;border: 1px solid #ccc;background: #f0f0f0;">Nombre</td>					
+					<td style="width: 300px;"><input type="text" name="txtNombreMenuAct" id="txtNombreMenuAct" value="<?=$rowMenuTitulo["modulo"];?>"></td>
+				</tr>
+				<tr>
+					<td style="height: 20px;padding: 5px;border: 1px solid #ccc;background: #f0f0f0;">Numero de Menu:</td>
+					<td><input type="text" name="txtNumeroMenuAct" id="txtNumeroMenuAct" value="<?=$rowMenuTitulo["numeroMenu"];?>"></td>
+				</tr>
+				<tr>
+					<td colspan="2"><hr style="background: #666;"></td>
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align: right;"><input type="button" value="Guardar" onclick="guardarMenuTituloActualizacion()"></td>
+				</tr>
+			</table>
+<?
+		}
+		
+		public function guardarSubmenuAct($idElementoAct,$txtNombreSubMenuAct,$txtRutaAct,$cboStatusSubmenuAct){
+			$sql="UPDATE submenu SET nombreSubMenu='".$txtNombreSubMenuAct."',rutaSubMenu='".$txtRutaAct."',activo='".$cboStatusSubmenuAct."' WHERE id='".$idElementoAct."'";
+			$res=mysql_query($sql,$this->conexion);
+			if(mysql_affected_rows() >=1 ){
+				echo "<script type='text/javascript'> alert('Actualizacion Realizada'); agregarSubMenu(); </script>";
+			}else{
+				echo "<script type='text/javascript'> alert('Advertencia: La actualizacion no se realizo \n\n No se modifico la informacion'); </script>";
+			}
+		}
+		
+		public function modificarSubmenu($id){
+			$sql="SELECT * FROM submenu WHERE id='".$id."'";
+			$res=mysql_query($sql,$this->conexion);
+			$row=mysql_fetch_array($res);
+			($row["activo"]==1) ? $valor="Activo" : $valor="Inactivo";
+?>			
+			<input type="hidden" name="txtIdElementoAct" id="txtIdElementoAct" value="<?=$id;?>">
+			<table border="1" cellpadding="1" cellspacing="1" width="480" style="margin: 10px;">
+				<tr>
+					<td colspan="2">Agregar Item Submen&uacute;</td>
+				</tr>
+				<tr>
+					<td style="width: 100px;">Nombre</td>					
+					<td style="width: 300px;"><input type="text" name="txtNombreSubMenuAct" id="txtNombreSubMenuAct" value="<?=$row["nombreSubMenu"];?>"></td>
+				</tr>
+				<tr>
+					<td>Ruta</td>
+					<td><input type="text" name="txtRutaAct" id="txtRutaAct" value="<?=$row["rutaSubMenu"];?>" style="width:250px; font-size:14px;" />&nbsp;<input type="button" value="Ver Modulos" onclick="listarModulos()" /></td>
+				</tr>
+				<tr>
+					<td colspan="2"><div id="listadomodulos" style=" display:none;height:250px; overflow:auto; border:1px solid #CCC;"></div></td>
+				</tr>
+				<tr>
+					<td>Activo</td>
+					<td>
+						<select name="cboStatusSubmenu" id="cboStatusSubmenuAct" style="width: 150px;">
+							<option value="<?=$row["activo"];?>" selected="selected"><?=$valor;?></option>
+							<option value="1">Activo</option>
+							<option value="0">Inactivo</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2"><hr style="background: #666;"></td>
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align: right;"><input type="button" value="Guardar" onclick="guardarSubMenuActualizacion()"></td>
+				</tr>
+			</table><br><br><div id="divGuardadoSubMenu"></div>
+<?			
+		}
+		
+		public function guardarSubmenu($idElemento,$txtNombreSubMenu,$txtRuta,$cboStatusSubmenu){
+			$sql="INSERT INTO submenu (id_menu,nombreSubMenu,rutaSubMenu,activo) VALUES ('".$idElemento."','".$txtNombreSubMenu."','".$txtRuta."','".$cboStatusSubmenu."')";
+			$res=mysql_query($sql,$this->conexion);
+			if($res){
+				echo "<script type='text/javascript'> alert('Elemento Guardado'); mostrarOpcionesMenu(); </script>";
+			}else{
+				echo "<script type='text/javascript'> alert('Error al Guardar Elemento'); agregarSubMenu(); </script>";
+			}
+		}
+		
+		public function agregarItemSubmenu($idElemento){
+?>			
+			<input type="hidden" name="txtIdElemento" id="txtIdElemento" value="<?=$idElemento;?>">
+			<table border="0" cellpadding="1" cellspacing="1" width="480" style="margin: 10px;font-size: 12px;">
+				<tr>
+					<td colspan="2" style="height: 20px;padding: 5px;background: #000;color: #fff;">Agregar Submen&uacute;</td>
+				</tr>
+				<tr>
+					<td style="width: 100px;height: 20px;padding: 5px;border: 1px solid #ccc;background: #f0f0f0;">Nombre</td>					
+					<td style="width: 300px;"><input type="text" name="txtNombreSubMenu" id="txtNombreSubMenu"></td>
+				</tr>
+				<tr>
+					<td style="height: 20px;padding: 5px;border: 1px solid #ccc;background: #f0f0f0;">Ruta</td>
+					<td><input type="text" name="txtRuta" id="txtRuta" style="width:250px; font-size:14px;" />&nbsp;<input type="button" value="Ver Modulos" onclick="listarModulos()" /></td>
+				</tr>
+				<tr>
+					<td colspan="2"><div id="listadomodulos" style=" display:none;height:250px; overflow:auto; border:1px solid #CCC;"></div></td>
+				</tr>
+				<tr>
+					<td style="height: 20px;padding: 5px;border: 1px solid #ccc;background: #f0f0f0;">Activo</td>
+					<td>
+						<select name="cboStatusSubmenu" id="cboStatusSubmenu" style="width: 150px;">
+							<option value="" selected="selected">Selecciona...</option>
+							<option value="1">Activo</option>
+							<option value="0">Inactivo</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2"><hr style="background: #666;"></td>
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align: right;"><input type="button" value="Guardar" onclick="guardarSubMenu()"></td>
+				</tr>
+			</table><br><br><div id="divGuardadoSubMenu"></div>
+<?
+		}
+		
+		public function mostrarOpcionesMenu(){
+			$sql="Select * FROM gruposmods WHERE pertenece_a='Menu' Order By numeroMenu";
+			$res=mysql_query($sql,$this->conexion);			
+?>
+			<div style="height: 20px;padding: 5px;background: #f0f0f0;border:1px solid #CCC;"><a href="#" onclick="nuevaFuncionalidad()" style="text-decoration: none;color: blue;">Agregar Men&uacute;</a></div>
+			<div style="border: 1px solid #000;height: 94%;width: 99%;margin: 3px;">
+				<div style="float: left;width: 47%;height: 99%;border: 1px solid #CCC;margin: 2px;overflow: auto;">
+				<table border="0" cellpadding="1" cellspacing="1" width="400" style="margin: 10px;font-size: 12px;">
+					<tr>
+						<td colspan="2" style="background: #000;color: #fff;height: 23px;padding: 5px;">Agregar Men&uacute; - Submen&uacute;</td>
+					</tr>
+					<tr>
+						<td width="350" style="border: 1px solid #CCC;background: #f0f0f0;height: 20px;padding: 5px;">Nombre</td>
+						<td width="50" style="border: 1px solid #CCC;background: #f0f0f0;height: 20px;padding: 5px;">Acci&oacute;n</td>				
+					</tr>
+<?
+			$i=0;
+			while($row=mysql_fetch_array($res)){
+				$nombreDiv="Submenu".$i;
+				//se extraen los submenus si existen
+				$sqlSub="SELECT * FROM submenu WHERE id_menu='".$row["id"]."' AND activo='1'";
+				$resSub=mysql_query($sqlSub,$this->conexion);
+?>
+					<tr>
+						<td style="text-align: left;background: #f0f0f0;border: 1px solid #CCC;height: 20px;padding: 5px;">=><?=$row["numeroMenu"]." - ";?><a href="#" onclick="modificarMenuTitulo('<?=$row["id"]?>')" title="Modificar Menu" style="color: blue;font-size: 12px;text-decoration: none;"><?=$row["modulo"];?></a></td>
+						<td style="text-align: center;"><a href="#" title="Agregar Submenu" onclick="agregarItemSubMenu('<?=$row["id"];?>')" style="color: blue;"><img src="../../img/add.png" border="0" /></a></td>					
+					</tr>
+					<tr>
+						<td colspan="2">
+							<div id="<?=$nombreDiv;?>">
+<?				
+				if(mysql_num_rows($resSub)!=0){
+					while($rowsub=mysql_fetch_array($resSub)){
+?>
+						<div style="height: 15px;padding: 5px;">==>&nbsp;<a href="#" onclick="modificarSubmenu('<?=$rowsub['id']?>')" title="Modificar Submen&uacute;" style="font-size: 12px;"><?=$rowsub["nombreSubMenu"]?></a></div>
+<?
+					}
+				}
+?>							
+							</div>
+						</td>
+					</tr>
+<?
+				$i+=1;
+			}
+?>
+				</table>	
+				</div>
+				<div id="divSubMenu" style="float: left;width: 47%;height: 99%;border: 1px solid #CCC;margin: 2px;overflow: auto;"></div>
+			</div>
+			
+<?
+		}
+		
+		public function guardaConfNueva($nombreConf,$valor,$descripcion){
+			$sql="INSERT INTO configuracionglobal(nombreConf,valor,descripcion) VALUES ('".$nombreConf."','".$valor."','".$descripcion."')";
+			$res=mysql_query($sql,$this->conexion);
+			if($res){
+				echo "<script type='text/javascript'> alert('Configuracion Guardada'); configuracionesGlobales(); </script>";
+			}else{
+				echo "<script type='text/javascript'> alert('Error al Guardar la Configuracion');</script>";
+			}
+		}
+		
+		public function formAgergarConf(){
+			$objVerifica=new verificaUsuario();
+			$objVerifica->cargaArchivosClase();
+			$objVerifica->muestraFormularioUsuario();
+?>
+			<table border="0" cellpadding="1" cellspacing="1" width="600" style="margin: 5px;font-size: 12px;border: 1px solid #000;">
+				<tr>
+					<td colspan="2" style="height: 20px;padding: 5px;border: 1px solid #000;background: #000;color: #fff;">Agregar Configuracion Global para el Sistema</td>
+				</tr>
+				<tr>
+					<td style="height: 20px;padding: 5px;background: #f0f0f0;color: #000;">Nombre Configuraci&oacute;n</td>
+					<td><input type="text" name="txtNombreConfiguracion" id="txtNombreConfiguracion"></td>
+				</tr>
+				<tr>
+					<td style="height: 20px;padding: 5px;background: #f0f0f0;color: #000;">Valor</td>
+					<td><input type="text" name="txtValorConfiguracion" id="txtValorConfiguracion"></td>
+				</tr>
+				<tr>
+					<td style="height: 20px;padding: 5px;background: #f0f0f0;color: #000;">Descripci&oacute;n</td>
+					<td><textarea name="txtDescripcion" id="txtDescripcion" cols="25" rows="3"></textarea></td>
+				</tr>
+				<tr>
+					<td colspan="2"></td>					
+				</tr>
+				<tr>
+					<td colspan="2"><input type="button" value="Guardar" onclick="guardarConfiguracionGlobal()"></td>					
+				</tr>
+			</table>	
+<?
+		}
+		
+		public function modificarValorConfiguracion($id,$nvoValor){
+			$sql="UPDATE configuracionglobal set valor='".$nvoValor."' WHERE id='".$id."'";
+			$res=mysql_query($sql,$this->conexion);
+			if(mysql_affected_rows()>=1){
+				echo "<script type='text/javascript'> alert('Actualizacion Realizada'); configuracionesGlobales(); </script>";
+			}else{
+				echo "<script type='text/javascript'> alert('Error, puede deberse a las siguientes causas:\n\n no se modifico el valor de la configuracion \n\nOcurrieron errores al actualizar'); </script>";
+			}
+		}
+		
+		public function mostrarConfiguracionesGlobales(){
+			//se extaen las configuraciones guardadas
+			$sqlC="SELECT * FROM configuracionglobal order by id";
+			$resC=mysql_query($sqlC,$this->conexion);
+			if(mysql_num_rows($resC)==0){
+				echo "No existen configuraciones globales";
+			}else{
+?>
+				<table border="0" cellpadding="1" cellspacing="1" width="600" style="margin: 5px;font-size: 12px;border: 1px solid #000;">
+					<tr>
+						<td colspan="4" style="height: 20px;padding: 5px;">Configuraciones Globales para el Sistema</td>
+					</tr>
+					<tr>
+						<td style="border: 1px solid #000;background: #000;color: #fff;">&nbsp;</td>
+						<td style="border: 1px solid #000;background: #000;color: #fff;height: 20px;padding: 5px;">Nombre Configuracion</td>
+						<td style="border: 1px solid #000;background: #000;color: #fff;height: 20px;padding: 5px;">Valor</td>
+						<td style="border: 1px solid #000;background: #000;color: #fff;height: 20px;padding: 5px;">Descripci&oacute;n</td>
+					</tr>
+<?
+				while($rowC=mysql_fetch_array($resC)){					
+?>
+					<tr>
+						<td style="border-bottom: 1px solid #000;border-right: 1px solid #000;height: 25px;padding: 5px;">
+<?
+					if($rowC["nombreConf"]=="sitio_desactivado"){
+						echo "N/A";
+					}else{
+?>
+						<a href="#" onclick="modificarValorConf('<?=$rowC["nombreConf"]?>','<?=$rowC["valor"];?>','<?=$rowC["id"]?>')" title="Modificar">Modificar</a>
+<?
+					}
+?>							
+						</td>
+						<td style="border-bottom: 1px solid #000;border-right: 1px solid #000;height: 25px;padding: 5px;"><?=$rowC["nombreConf"];?></td>
+						<td style="border-bottom: 1px solid #000;border-right: 1px solid #000;height: 25px;padding: 5px;"><?=$rowC["valor"];?></td>
+						<td style="border-bottom: 1px solid #000;height: 25px;padding: 5px;">&nbsp;<?=$rowC["descripcion"]?></td>
+					</tr>
+<?
+				}
+?>
+				</table>
+<?
+			}			
+		}
+		
+		public function listarImagen(){		
 			$path="../../img/imagenes/";
 			$directorio=dir($path);
 ?>
-            <table width="99%" border="0" cellspacing="1" cellpadding="1" style="margin:5px;">
-              <tr>
-                
-                <td><a href="#" onclick="cierraDiv('listadoimagen')">Cerrar</a></td>
-              </tr>
-              <tr>
-                <td colspan="2" style="height:25px; padding:5px;">Imagenes del Sistema</td>
-              </tr>          
-              <tr>
-                <td width="6%">&nbsp;</td>
-                <td width="94%">&nbsp;</td>
-              </tr>
-<?	
-		
-	
+			<table width="99%" border="0" cellspacing="1" cellpadding="1" style="margin:5px;">
+				<tr>                
+					<td><a href="#" onclick="cierraDiv('listadoimagen')">Cerrar</a></td>
+				</tr>
+				<tr>
+				  <td colspan="2" style="height:25px; padding:5px;">Imagenes del Sistema</td>
+				</tr>          
+				<tr>
+				  <td width="6%">&nbsp;</td>
+				  <td width="94%">&nbsp;</td>
+				</tr>
+<?			
 			while ($archivo1 = $directorio->read()){
-			   if(($archivo1!=".") && ($archivo1!="..")){				
+				if(($archivo1!=".") && ($archivo1!="..")){				
 ?>
-					<tr>
-            	    	<td><img src="<?=$path.$archivo1;?>" border="0" /></td>
-                	    <td><input type="text" value="<?=$path.$archivo1;?>" style="width:350px;" /></td>
-                	</tr>
+				<tr>
+					<td><img src="<?=$path.$archivo1;?>" border="0" /></td>
+					<td><input type="text" value="<?=$path.$archivo1;?>" style="width:350px;" /></td>
+				</tr>
 <?				
 		   		}	   
 			}	
@@ -57,38 +400,35 @@
 		
 		//listado de modulos
 		public function listarModulos(){
-			$path="../../modulos";
+			$path="../../modulos"; $path2="../modulos";
 			$directorio=dir($path);
 ?>
-            <table width="99%" border="0" cellspacing="1" cellpadding="1" style="margin:5px;">
-              <tr>
-                
-                <td><a href="#" onclick="cierraDiv('listadomodulos')">Cerrar</a></td>
-              </tr>
-              <tr>
-                <td style="height:25px; padding:5px;">Modulos del Sistema</td>
-                <td>&nbsp;</td>
-              </tr>          
-              <tr>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-              </tr>
+			<table width="99%" border="0" cellspacing="1" cellpadding="1" style="margin:5px;">
+				<tr>                
+					<td><a href="#" onclick="cierraDiv('listadomodulos')">Cerrar</a></td>
+				</tr>
+				<tr>
+					<td style="height:25px; padding:5px;">Modulos del Sistema</td>
+					<td>&nbsp;</td>
+				</tr>          
+				<tr>
+				  <td>&nbsp;</td>
+				  <td>&nbsp;</td>
+				</tr>
 <?	
-		
-	
 			while ($archivo = $directorio->read()){
 			   if(substr($archivo,0,4)=="mod_"){				
 ?>
-					<tr>
-            	    	<td><input type="text" value="<?=$path."/".$archivo;?>/index.php" style="width:350px;" /></td>
-                	    <td>&nbsp;</td>
-                	</tr>
+				<tr>
+					<td><input type="text" value="<?=$path2."/".$archivo;?>/index.php" style="width:350px;" /></td>
+					<td>&nbsp;</td>
+				</tr>
 <?				
 		   		}	   
 			}	
 			$directorio->close();
 ?>
-</table>
+			</table>
 <?		
 		}
 		
@@ -105,62 +445,95 @@
 			$resGrupoActual=mysql_query($sqlGrupoActual,$this->conexion);
 			$rowGrupoActual=mysql_fetch_array($resGrupoActual);
 			$privilegios=$rowGrupoActual['opcFuncional'];
-			$privilegios=explode("|",$privilegios);
+			$privilegios=explode(",",$privilegios);
 			//funcionalidades
-			$sqlFuncionalidades="SELECT * FROM gruposmods WHERE activo=1";
-			$resFuncionalidades=mysql_query($sqlFuncionalidades,$this->conexion);
-?>
-			<form name="frmModificaGrupo" id="frmModificaGrupo">
-            <table width="98%" align="center" border="0" cellpadding="1" cellspacing="1" style="font-size:12px;">
-            	<tr>
-                	<td colspan="3" style="height:25px; background:#000000; color:#FFFFFF;">Informacion del Grupo</td>
-                </tr>
-                <tr>
-                	<td width="50%" style="height:25px; border:1px solid #999; background:#CCC;">Nombre Grupo:</td>
-                    <td colspan="2" width="50%">&nbsp;<?=$rowGrupoActual['nombre'];?></td>
-                </tr>
-                <tr>
-                	<td colspan="3">&nbsp;</td>                    
-                </tr>
-                <tr>
-                	<td style="height:25px; border:1px solid #999; background:#CCC;">Modulos</td>
-                    <td style="height:25px; border:1px solid #999; background:#CCC;">Pertenece a</td>
-                    <td style="height:25px; border:1px solid #999; background:#CCC;">Permisos</td>
-                </tr>
+			$sqlFuncionalidades="SELECT * FROM gruposmods WHERE activo=1  ORDER BY numeroMenu";
+			$result_modulos=mysql_query($sqlFuncionalidades,$this->conexion);
+			$regs=mysql_num_rows($result_modulos);
+?>			
+			<form name="frmModificaGrupo" id="frmModificaGrupo"><br>
+				<table width="700" align="center" border="0" cellpadding="1" cellspacing="1" style="font-size:12px;">
+					<tr>
+						<td colspan="3" style="height:25px; background:#000000; color:#FFFFFF;">Modificar Informacion del Grupo</td>
+					</tr>
+					<tr>
+						<td width="50%" style="height:25px; border:1px solid #999; background:#CCC;">Nombre del Grupo:</td>
+					    <td colspan="2" width="50%">&nbsp;<?=$rowGrupoActual['nombre'];?></td>
+					</tr>
+					<tr>
+						<td colspan="3">&nbsp;</td>                    
+					</tr>					
+					<tr>
+						<td colspan="2" align="left" style=" background:#CCC; border:1px solid #999;">Modulo / Submenu </td>						
+						<td width="104" align="center" style=" background:#CCC; border:1px solid #999;">Permiso</td>						
+					</tr>
 <?
-			$color="#FFF";
-			while($rowFuncionalidades=mysql_fetch_array($resFuncionalidades)){
+				if($regs != 0){
+					$i=0;
+					while($row_modulos=mysql_fetch_array($result_modulos)){
+						$cboMnuP="cbo".$i;//nombre del campo oculto
+						//se muestran la estructura del menu
+						$sqlS="SELECT * FROM submenu where id_menu='".$row_modulos["id"]."'";
+						$resS=mysql_query($sqlS,$this->conexion);
+						if(mysql_num_rows($resS)!=0){
+							$nRegMenu=mysql_num_rows($resS);	
+						}else{
+							$nRegMenu=0;	
+						}
+						$valorMnuP=$row_modulos['id']."?";
 ?>
-				<tr style="background:<?=$color;?>;">
-                	<td style="border-bottom:1px solid #CCC;"><?=$rowFuncionalidades['modulo'];?></td>
-                    <td style="border-bottom:1px solid #CCC;"><?=$rowFuncionalidades['pertenece_a'];?></td>
-                    <td style="border-bottom:1px solid #CCC;">
+						<tr>
+							<td colspan="2" style="height:25px; border-bottom:1px solid #CCC;background: #f0f0f0;font-weight: bold;"><?=$row_modulos["modulo"];?></td>
+							<td style="height:25px; border-bottom:1px solid #CCC;text-align: center;background: #f0f0f0;">&nbsp;
+								<input type="hidden" name="<?=$cboMnuP;?>" id="<?=$cboMnuP;?>" value="<?=$nRegMenu?>" />
+								<!--<input type="checkbox" name="cb" value="<?=$valorMnuP;?>" onClick="if(this.checked == true){seleccionarMenuCompleto('<?=$nRegMenu;?>','<?=$row_modulos["id"];?>')} else{quitarSeleccionMenuCompleto('<?=$nRegMenu;?>','<?=$row_modulos["id"];?>')}" />-->
+							</td>
+						</tr>
+						<tr>
+							<td colspan="3">
+								<table border="0" cellpadding="1" cellspacing="1" width="610" style="font-size: 12px;">
 <?
-					if(in_array($rowFuncionalidades['id'],$privilegios)){						
-						$indice=array_search($rowFuncionalidades['id'],$privilegios);
+						$j=0;
+						while($rowS=mysql_fetch_array($resS)){
+							$cbo="cbo".$row_modulos["id"].$j;
+							//echo $rowS["id"];
+							if(in_array($rowS["id"],$privilegios)){								
+							echo "<tr>
+								<td width='480' style='height:25px; border-bottom:1px solid #CCC;'>--&nbsp;".$rowS["nombreSubMenu"]."</td>
+								<td width='120' style='height:25px; border-bottom:1px solid #CCC;'><input type='checkbox' name='cb' id='".$cbo."' checked='checked' value='".$rowS['id']."' /></td>
+							      </tr>";								
+							}else{							
+							echo "<tr>
+								<td width='480' style='height:25px; border-bottom:1px solid #CCC;'>--&nbsp;".$rowS["nombreSubMenu"]."</td>
+								<td width='120' style='height:25px; border-bottom:1px solid #CCC;'><input type='checkbox' name='cb' id='".$cbo."' value='".$rowS['id']."' /></td>
+							      </tr>";
+							}
+							$j+=1;
+						}
 ?>
-						<input type="checkbox" id="cb" name="cb" checked="checked" value="<?=$rowFuncionalidades['id']?>" />
-<?						
-					}else{						
-?>
-						<input type="checkbox" id="cb" name="cb" value="<?=$rowFuncionalidades['id']?>" />
-<?						
+								</table>
+							</td>
+						</tr>
+<?
+						$i+=1;
+
 					}
+				}else{
 ?>
-                    </td>
-                </tr>
-<?				
-				($color=="FFF") ? $color="F0F0F0" : $color="FFF";
-			}
-?>
-                <tr>
-                	<td colspan="3"><hr style="color:#CCC;" /></td>                    
-                </tr>
-                <tr>
-                	<td colspan="3" align="right"><input type="button" value="Guardar Cambios" onclick="actualizaGrupo('<?=$idGrupo;?>')" /></td>                    
-                </tr>
-            </table>
-            </form>
+					<tr>
+						<td colspan="6">No hay Modulos Activos</td>
+					</tr>
+<?			
+				}
+?>					
+					<tr>
+						<td colspan="3"><hr style="color:#CCC;" /></td>                    
+					</tr>
+					<tr>
+						<td colspan="3" align="right"><input type="button" value="Guardar Cambios" onclick="actualizaGrupo('<?=$idGrupo;?>')" /></td>                    
+					</tr>
+				</table>
+			</form>
 <?			
 		}
 		//consulta de grupos
@@ -181,20 +554,21 @@
 					</tr>                  
 <?			
 				while($rowGrupos=mysql_fetch_array($resultGrupos)){
-					$valores=explode("|",$rowGrupos['opcFuncional']);
+					$valores=explode(",",$rowGrupos['opcFuncional']);
 ?>
 					<tr>
 						<td align="center" style="height:25px; border-bottom:1px solid #CCCCCC; border-right:1px solid #CCCCCC; border-left:1px solid #CCC;"><a href="javascript:modificaGrupo('<?=$rowGrupos['id'];?>')" title="Modificar los privilegiios de este grupo"><?=$rowGrupos['nombre'];?></a></td>
 						<td align="center" style="height:25px; border-bottom:1px solid #CCCCCC; border-right:1px solid #CCCCCC;"><?=$rowGrupos['fecha_hora_creacion'];?></td>
 						<td align="center" style="height:25px; border-bottom:1px solid #CCCCCC; border-right:1px solid #CCCCCC;"><?=$rowGrupos['activo'];?></td>
 						<td align="left" style="height:25px; border-bottom:1px solid #CCCCCC; border-right:1px solid #CCCCCC;">
-						<div style="height:200px; overflow:auto;">
+						<div style="height:auto; overflow:auto;">
 <?
 					for($i=0;$i<count($valores);$i++){
-						$sqlModulos="SELECT modulo FROM gruposmods WHERE id='".$valores[$i]."'";
+						//$sqlModulos="SELECT modulo FROM gruposmods WHERE id='".$valores[$i]."'";
+						$sqlModulos="SELECT nombreSubMenu FROM submenu WHERE id='".$valores[$i]."'";
 						$resultModulos=mysql_query($sqlModulos,$this->conexion);
 						$rowModulos=mysql_fetch_array($resultModulos);
-						echo $rowModulos['modulo']."<br>";
+						echo $rowModulos['nombreSubMenu']."<br>";
 					}
 ?>
 						</div>
@@ -222,71 +596,83 @@
 		//agrega grupo
 		function addGrupo(){		
 			include("../../includes/conectarbase.php");
-			$sql_modulos="SELECT * FROM gruposmods WHERE activo='1'";
+			//$sql_modulos="SELECT * FROM gruposmods WHERE activo='1'";
+			//$sql_modulos="SELECT * FROM submenu WHERE activo='1'";
+			$sql_modulos="SELECT * FROM gruposmods WHERE activo = '1' ORDER BY numeroMenu";
 			$result_modulos=mysql_query($sql_modulos,$this->conexion);
 			$regs=mysql_num_rows($result_modulos);
-	?>
+?>
 			<form name="crearGrupo" id="crearGrupo"><br />
-            	<input type="hidden" name="ndregistros" id="ndregistros" value="<?=$regs;?>" />
-            <table width="700" border="0" cellspacing="1" cellpadding="1" align="center" style="font-size:12px; border:1px solid #666;">
-				<tr>
-					<td colspan="6" style="height:25px; margin-top:5px; background:#000; color:#FFF;">Agregar Nuevo Grupo</td>
-				</tr>
-				<tr>
-					<td width="138">Nombre del Grupo</td>
-					<td colspan="5"><input type="text" name="nombreGrupo" id="nombreGrupo" style="width:250px; font-size:14px;" />
-                      <input type="radio" name="grupo" id="grupo2" value="grupos" checked="checked" onchange="filtrarNombres('filaGrupo')" />Grupos
-					  <input type="radio" name="grupo" id="grupo" value="area" onchange="filtrarNombres('Depto')" />Area       
-                  </td>					
-				</tr>
-				<tr>
-					<td colspan="6" style="height:25px;">Seleccione los Privilegios del grupo en el Sistema</td>
-				</tr>
-				<tr>
-					<td colspan="2" align="left" style=" background:#CCC; border:1px solid #999;">Modulo</td>
-					<td width="219" align="center"  style=" background:#CCC; border:1px solid #999;">Pertenece a:</td>
-					<td width="104" align="center" style=" background:#CCC; border:1px solid #999;">Permiso</td>
-					<!--<td align="center">W</td>-->
-					<!--<td align="center">X</td>-->
-				</tr>
-	<?
+				<input type="hidden" name="ndregistros" id="ndregistros" value="<?=$regs;?>" />
+				<table width="700" border="0" cellspacing="1" cellpadding="1" align="center" style="font-size:12px; border:1px solid #666;">
+					<tr>
+						<td colspan="6" style="height:25px; margin-top:5px; background:#000; color:#FFF;">Agregar Nuevo Grupo</td>
+					</tr>
+					<tr>
+						<td width="138">Nombre del Grupo</td>
+						<td colspan="2"><input type="text" name="nombreGrupo" id="nombreGrupo" style="width:250px; font-size:14px;" />
+							<input type="radio" name="grupo" id="grupo2" value="grupos" checked="checked" onchange="filtrarNombres('filaGrupo')" />Grupos
+							<input type="radio" name="grupo" id="grupo" value="area" onchange="filtrarNombres('Depto')" />Area       
+						</td>					
+					</tr>
+					<tr>
+						<td colspan="3" style="height:25px;">Seleccione los Privilegios del grupo en el Sistema</td>
+					</tr>
+					<tr>
+						<td colspan="2" align="left" style=" background:#CCC; border:1px solid #999;">Modulo / Submenu </td>						
+						<td width="104" align="center" style=" background:#CCC; border:1px solid #999;">Permiso</td>						
+					</tr>
+<?
 				if($regs != 0){
 					$i=0;
 					while($row_modulos=mysql_fetch_array($result_modulos)){
-						if($row_modulos['modulo']=="Area/Departamento" || $row_modulos['modulo']=="Area"){
-							$idFila="Depto";
-?>
-						<tr id="<?=$idFila;?>" style="display:none;">
-							<td colspan="2" style="height:25px; border-bottom:1px solid #CCC;">&nbsp;&nbsp;<?=$row_modulos['modulo'];?></td>
-							<td style=" text-align:center;height:25px;  border-bottom:1px solid #CCC; border-left:1px solid #CCC;"><?=$row_modulos['pertenece_a']?></td>
-							<td style="text-align:center;height:25px; border-bottom:1px solid #CCC; border-left:1px solid #CCC;"><input type="checkbox" name="cb" value="<?=$row_modulos['id'];?>" /></td>
-							<!--<td style="text-align:center;height:25px;"><input type="checkbox" name="cb" value="1" /></td>-->
-							<!--<td style="text-align:center;height:25px;"><input type="checkbox" value="1" /></td>-->
-						</tr>
-<?						
+						$cboMnuP="cbo".$i;//nombre del campo oculto
+						//se muestran la estructura del menu
+						$sqlS="SELECT * FROM submenu where id_menu='".$row_modulos["id"]."'";
+						$resS=mysql_query($sqlS,$this->conexion);
+						if(mysql_num_rows($resS)!=0){
+							$nRegMenu=mysql_num_rows($resS);	
 						}else{
-							$idFila="filaGrupo".$i;
+							$nRegMenu=0;	
+						}
+						$valorMnuP=$row_modulos['id']."?";
 ?>
-						<tr id="<?=$idFila;?>">
-							<td colspan="2" style="height:25px; border-bottom:1px solid #CCC;">&nbsp;&nbsp;<?=$row_modulos['modulo'];?></td>
-							<td style=" text-align:center;height:25px;  border-bottom:1px solid #CCC; border-left:1px solid #CCC;"><?=$row_modulos['pertenece_a']?></td>
-							<td style="text-align:center;height:25px; border-bottom:1px solid #CCC; border-left:1px solid #CCC;"><input type="checkbox" name="cb" value="<?=$row_modulos['id'];?>" /></td>
-							<!--<td style="text-align:center;height:25px;"><input type="checkbox" name="cb" value="1" /></td>-->
-							<!--<td style="text-align:center;height:25px;"><input type="checkbox" value="1" /></td>-->
+						<tr>
+							<td colspan="2" style="height:25px; border-bottom:1px solid #CCC;background: #f0f0f0;font-weight: bold;"><?=$row_modulos["modulo"];?></td>
+							<td style="height:25px; border-bottom:1px solid #CCC;text-align: center;background: #f0f0f0;">&nbsp;
+								<input type="hidden" name="<?=$cboMnuP;?>" id="<?=$cboMnuP;?>" value="<?=$nRegMenu?>" />
+								<!--<input type="checkbox" name="cb" value="<?=$valorMnuP;?>" onClick="if(this.checked == true){seleccionarMenuCompleto('<?=$nRegMenu;?>','<?=$row_modulos["id"];?>')} else{quitarSeleccionMenuCompleto('<?=$nRegMenu;?>','<?=$row_modulos["id"];?>')}" />-->
+							</td>
+						</tr>
+						<tr>
+							<td colspan="3">
+								<table border="0" cellpadding="1" cellspacing="1" width="610" style="font-size: 12px;">
+<?
+						$j=0;
+						while($rowS=mysql_fetch_array($resS)){
+							$cbo="cbo".$row_modulos["id"].$j;
+							echo "<tr>
+								<td width='480' style='height:25px; border-bottom:1px solid #CCC;'>--&nbsp;".$rowS["nombreSubMenu"]."</td>
+								<td width='120' style='height:25px; border-bottom:1px solid #CCC;'><input type='checkbox' name='cb' id='".$cbo."' value='".$rowS['id']."' /></td>
+							      </tr>";
+							$j+=1;
+						}
+?>
+								</table>
+							</td>
 						</tr>
 <?
+						$i+=1;
 
-							$i+=1;
-						}						
 					}
 				}else{
-	?>
+?>
 					<tr>
 						<td colspan="6">No hay Modulos Activos</td>
 					</tr>
-	<?			
+<?			
 				}
-	?>
+?>
 				<tr>
 					<td colspan="6"><hr color="#CCCCCC" /></td>
 				</tr>
@@ -686,37 +1072,24 @@
 ?>
 
 			<div style="padding:10px;">           
-			<form method="get">
-			<table width="695" border="0" cellspacing="1" cellpadding="1" align="center" style="font-size:12px;">
-				<tr>
-					<td colspan="2" style="height:25px; margin-top:5px; background:#000; color:#FFF;">A&ntilde;adir Funcionalidad / Men&uacute;</td>
-				</tr>                  
-			</table>
+			<form method="get">			
 			<div id="datosProceso" style="display:block; margin:5px;">
-			<table width="695" border="0" cellspacing="1" cellpadding="1" align="center" style="font-size:12px; border:1px solid #666;">
+			<table width="495" border="0" cellspacing="1" cellpadding="1" align="center" style="font-size:12px; border:1px solid #666;">
 				<tr>
-					<td width="156" class="bordesTitulos" style="height:25px;">Nombre del Modulo / Men&uacute;</td>
-					<td width="350" class="bordesContenido" style="height:25px;"><input type="text" name="txtModulo" id="txtModulo" style="width:250px; font-size:14px;" /></td>
+					<td colspan="2" style="height:25px; margin-top:5px; background:#000; color:#FFF;">A&ntilde;adir Men&uacute;</td>
+				</tr>
+				<tr>
+					<td width="156" class="bordesTitulos" style="height:25px;">Nombre del Men&uacute;</td>
+					<td width="350" class="bordesContenido" style="height:25px;"><input type="text" name="txtModulo" id="txtModulo" style="width:200px; font-size:14px;" /></td>
 				</tr>
 				<tr>
 					<td width="156" class="bordesTitulos" style="height:25px;">Pertenece a</td>
-					<td width="350" class="bordesContenido" style="height:25px;"><input type="text" name="txtPer" id="txtPer" style="width:250px; font-size:14px;" /></td>
+					<td width="350" class="bordesContenido" style="height:25px;"><input type="text" name="txtPer" id="txtPer" style="width:200px; font-size:14px;" readonly="readonly" value="Menu" /></td>
 				</tr>
 				<tr>
 					<td width="156" class="bordesTitulos" style="height:25px;">No. Men&uacute;</td>
-					<td width="350" class="bordesContenido" style="height:25px;"><input type="text" name="txtMenu" id="txtMenu" style="width:250px; font-size:14px;" /></td>
-				</tr>
-				<tr>
-					<td width="156" class="bordesTitulos" style="height:25px;">Ruta del Modulo</td>
-					<td width="350" class="bordesContenido" style="height:25px;"><input type="text" name="txtRuta" id="txtRuta" style="width:250px; font-size:14px;" />&nbsp;<input type="button" value="Ver Modulos" onclick="listarModulos()" /></td>
-				</tr>
-				<tr>
-					<td colspan="2"><div id="listadomodulos" style=" display:none;height:250px; overflow:auto; border:1px solid #CCC;"></div></td>
-				</tr>
-				<tr>
-					<td width="156" class="bordesTitulos" style="height:25px;">Imagen</td>
-					<td width="350" class="bordesContenido" style="height:25px;"><input type="text" name="txtImagen" id="txtImagen" style="width:250px; font-size:14px;" />&nbsp;<input type="button" value="Ver Imagenes" onclick="listarImagen()" /></td>
-				</tr>
+					<td width="350" class="bordesContenido" style="height:25px;"><input type="text" name="txtMenu" id="txtMenu" style="width:200px; font-size:14px;" /></td>
+				</tr>				
 				<tr>
 					<td colspan="2"><div id="listadoimagen" style=" display:none;height:250px; overflow:auto; border:1px solid #CCC;"></div></td>
 				</tr>                     
@@ -731,23 +1104,19 @@
 <?php				  
 		}//fin funcion nuevaFuncionForm
 
-		public function guardarFuncion($txtModulo,$txtPer,$txtMenu,$txtRuta,$txtImagen){
+		public function guardarFuncion($txtModulo,$txtPer,$txtMenu){
 			include("../../includes/config.inc.php");
 			$conn=new Conexion();
 			$var=$conn->getConexion($host,$usuario,$pass,$db);
 			//echo "<br>".
-		echo	$sqlGuarda="INSERT INTO gruposmods (modulo,pertenece_a,numeroMenu,ruta,rutaimg) values('".$txtModulo."','".$txtPer."','".$txtMenu."','".$txtRuta."','".$txtImagen."')";
+			//$sqlGuarda="INSERT INTO gruposmods (modulo,pertenece_a,numeroMenu,ruta,rutaimg) values('".$txtModulo."','".$txtPer."','".$txtMenu."','".$txtRuta."','".$txtImagen."')";
+			$sqlGuarda="INSERT INTO gruposmods (modulo,pertenece_a,numeroMenu) values('".$txtModulo."','".$txtPer."','".$txtMenu."')";
 			$resultGuarda=mysql_query($sqlGuarda,$var);
 			if($resultGuarda==true){
-				//echo "<br>Registro Agregado.<br>";
-				?>
-					<script type="text/javascript" >alert("Registro Agregado"); </script>
-				<?
+				echo "<script type='text/javascript'> alert('Registro Agregado'); mostrarOpcionesMenu(); </script>";				
 			}else{
-				//echo "<br>Error al Guardar.<br>";
-				?>
-					<script type="text/javascript" > alert("Error al Guardar."); </script>
-					<?
+				echo "<script type='text/javascript' > alert('Error al Guardar.'); </script>";
+				
 			}
 		}
 		

@@ -32,7 +32,7 @@
     <link type="text/css" href="../css/main.css" rel="stylesheet" />
     <link type="text/css" href="../clases/menu/estilosMenu.css" rel="stylesheet" />
     <title><?=$txtApp['login']['tituloAppPrincipal'];?></title>
-    <script type="text/javascript" src="../clases/jquery-1.3.2.min.js"></script>
+    <script type="text/javascript" src="../clases/jquery-1.3.2.min.js"></script>    
     <script type="text/javascript" src="js/funcionesMain.js"></script>
     <script type="text/javascript">	
 	$(document).ready(function (){	    

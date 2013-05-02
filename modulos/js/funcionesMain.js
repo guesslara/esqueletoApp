@@ -20,95 +20,6 @@ function llamaFuncionesTec(div){
 		break;
 	}
 }
-function opciones(opcion){
-	//"mod_recibo/index.php"
-	opcion=opcion.toLowerCase();
-	//var elemMenu = new Array("inicio","recibo","desensamble","test inicial","ensamble","calidad","despacho","planificador","configuracion","administracion"); 
-	var herrMenu = new Array("btnInicio","btnRecibo","btnDesensamble","btnTestInicial","btnEnsamble","btnCalidad","btnDespacho","btnPlanificador","btnConfiguracion","btnAdministracion");
-	
-	//for(var i=0;i<elemMenu.length;i++){
-		//document.getElementById(elemMenu[i]).className="botonesBarraIzq";
-		//document.getElementById(herrMenu[i]).style.display="none";
-	//}
-	
-	//document.getElementById(opcion).className="botonActivo";
-	var url="";
-	switch(opcion){
-		case 'inicio':
-			url="mod_inicio/index.php";			
-			$("#tituloBarraEstado").html("Modulo Actual - Inicio");
-			$("#btnDesensamble").hide();
-		break;
-		case 'almacen':
-			url="mod_almacen/index.php";
-			$("#tituloBarraEstado").html("Modulo Actual - Almacen");
-		break;
-		case 'recibo':
-			url="mod_recibo2/index.php";			
-			//$("#btnRecibo").show();
-			$("#tituloBarraEstado").html("Modulo Actual - Recibo Equipos");
-		break;
-		case 'desensamble':
-			url="mod_des/index.php";
-			$("#btnDesensamble").show();
-			$("#tituloBarraEstado").html("Modulo Actual - Desensamble");
-			$("#btnRecibo").hide();
-		break;
-		case 'test inicial':
-			url="mod_test/index.php";
-			$("#tituloBarraEstado").html("Modulo Actual - Test Inicial");
-			$("#btnRecibo").hide();
-		break;
-		case 'ensamble':
-			url="mod_ensamble/index.php";
-			$("#tituloBarraEstado").html("Modulo Actual - Ensamble");
-			$("#btnRecibo").hide();
-		break;
-		case 'calidad':
-			url="mod_calidad/index.php";
-			$("#tituloBarraEstado").html("Modulo Actual - Calidad");
-			$("#btnRecibo").hide();
-		break;
-		case 'despacho':
-			url="mod_despacho/index.php";
-			$("#tituloBarraEstado").html("Modulo Actual - Despacho");
-			$("#btnRecibo").hide();
-		break;
-		case 'planificador':
-			url="mod_forecast/index.php";
-			$("#tituloBarraEstado").html("Modulo Actual - Planificador");
-			$("#btnRecibo").hide();
-		break;
-		case 'configuracion':
-			url="mod_conf/index.php";
-			$("#tituloBarraEstado").html("Modulo Actual - Configuracion");
-			$("#btnRecibo").hide();
-		break;
-		case 'admin':
-			url="mod_admon/index.php";
-			$("#tituloBarraEstado").html("Modulo Actual - Admon Sistema");
-			$("#btnRecibo").hide();
-		break;
-	}
-	
-	$.ajax({
-	async:true,
-	type: "GET",
-	dataType: "html",
-	contentType: "application/x-www-form-urlencoded",
-	url:url,
-	data:"",
-	beforeSend:function(){ 
-		$("#cargadorApp").show().html('<img src="../img/cargador (2).gif">'); 
-	},
-	success:function(datos){
-		$("#cargadorApp").html("Listo");
-		$("#contenedorVentana").show().html(datos);
-	},
-	timeout:90000000,
-	error:function() { $("#contenedorVentana").show().html('<center>Error: El servidor no responde. <br>Por favor intente mas tarde. </center>'); }
-	});
-}
 function ventanaDesensamble(){
 	$("#btnRecibo").hide();
 	$.ajax({
@@ -147,6 +58,51 @@ function vMantto(){
 	},
 	timeout:90000000,
 	error:function() { $("#verificaMantto").show().html('Error: El sistema no puede localizar los archivos necesarios.'); }
+	});
+}
+function vActNuevas(){
+	$("#desv").show();
+	$.ajax({
+	async:true,
+	type: "POST",
+	dataType: "html",
+	contentType: "application/x-www-form-urlencoded",
+	url:"funcionesMain.php",
+	data:"action=verificaActNuevas",
+	beforeSend:function(){ 
+		$("#cargadorApp").show().html('<img src="../img/cargador (2).gif">'); 
+	},
+	success:function(datos){
+		$("#cargadorApp").html("Listo");
+		$("#numeroActualizacionesActuales").show().html(datos);
+	},
+	timeout:90000000,
+	error:function() { $("#verificaMantto").show().html('Error: El sistema no puede localizar los archivos necesarios.'); }
+	});
+}
+function vActSistema(){
+	/*div="msgNuevasReqs";
+	url="funcionesMostrar2.php";
+	parametros="action=buscarNuevas";
+	metodo="GET";
+	ajaxApp(div,url,parametros,metodo);*/
+	$("#desv").show();
+	$.ajax({
+	async:true,
+	type: "POST",
+	dataType: "html",
+	contentType: "application/x-www-form-urlencoded",
+	url:"funcionesMostrar2.php",
+	data:"action=buscarNuevas",
+	beforeSend:function(){ 
+		$("#cargadorApp").show().html('<img src="../img/cargador (2).gif">'); 
+	},
+	success:function(datos){
+		$("#cargadorApp").html("Listo");
+		$("#divActSistema").show().html(datos);
+	},
+	timeout:90000000,
+	error:function() { $("#divActSistema").show().html('Error: El sistema no puede localizar los archivos necesarios.'); }
 	});
 }
 function verificarScriptsApp(elemento){
@@ -253,4 +209,19 @@ function mostrarFiltros(){
 }
 function cerrarFiltros(){
 	$("#filtrosBusqueda").hide();
+}
+function abrirFormBug(){
+	$("#frmContenedorBug").show();
+	ajaxApp("divFormularioBug","funcionesMain.php","action=mostrarFormBug","GET");
+}
+function cerrarFormbug(){
+	$("#frmContenedorBug").hide	();
+}
+function enviarInfo(){
+	var mensaje=$("#txtDes").val();
+	if(mensaje != ""){
+		ajaxApp("divFormularioBug","funcionesMain.php","action=guardarFormBug&mensaje="+mensaje,"POST");	
+	}else{
+		alert("Escriba una descripcion breve de su problema.");	
+	}	
 }

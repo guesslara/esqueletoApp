@@ -1,8 +1,8 @@
 <?php
 	$txtApp = array();
 	//variables para la sesion
-	$txtApp['session']['name'] = "controlNextel";
-	$txtApp['session']['register'] = "controlNextel";
+	$txtApp['session']['name'] = "controlEsqueleto";
+	$txtApp['session']['register'] = "controlEsqueleto";
 	$txtApp['session']['nivelUsuario'] = "nivelUsuario";
 	$txtApp['session']['loginUsuario'] = "loginUsuario";
 	$txtApp['session']['passwordUsuario'] = "passwordUsuario";
@@ -10,23 +10,23 @@
 	$txtApp['session']['nombreUsuario'] = "nombreUsuario";
 	$txtApp['session']['apellidoUsuario'] = "apellidoUsuario";
 	$txtApp['session']['origenSistemaUsuario'] = "origenSistemaUsuario";
-	$txtApp['session']['origenSistemaUsuarioNombre'] = "origenControlNextel";
+	$txtApp['session']['origenSistemaUsuarioNombre'] = "origenControlEsqueleto";
 	$txtApp['session']['cambiarPassUsuario'] = "cambiarPassUsuario";
 	$txtApp['session']['sexoUsuario'] = "sexoUsuario";
 	$txtApp['session']['nominaUsuario'] = "nominaUsuario";
 	$txtApp['session']['idProyectoSeleccionado'] = "idProyectoSeleccionado";
 	//login de usuarios
-	$txtApp['login']['tituloAppTitle'] = "IQe. Sisco Nextel Refurbish";
-	$txtApp['login']['tituloAppPrincipal'] = "IQe. Sisco - Refurbish";
+	$txtApp['login']['tituloAppTitle'] = "[ App - Desarrollo ]";
+	$txtApp['login']['tituloAppPrincipal'] = "IQe. Sisco - [ Nombre App ]";
 	$txtApp['login']['tituloUsuario'] = "Usuario:";
 	$txtApp['login']['tituloPass'] = "Password:";
 	$txtApp['login']['btnApp'] = "Entrar";
 	$txtApp['login']['tituloAbout'] = "Acerca de...";
 	$txtApp['login']['pieLogin'] = "Acceso Intranet IQelectronics International ".date("Y");
 	//App GUI Principal
-	$txtApp['appPrincipal']['tituloPrincipalApp'] = "Nextel";
+	$txtApp['appPrincipal']['tituloPrincipalApp'] = "[ Titulo App Modulo ]";
 	$txtApp['appPrincipal']['cerrarSesion'] = "Cerrar Sesi&oacute;n";
-	$txtApp['appPrincipal']['msgModulo'] = "M&oacute;dulo: Nextel";
+	$txtApp['appPrincipal']['msgModulo'] = "[ Titulo App Modulo ]";
 	$txtApp['appPrincipal']['msgActualizaciones'] = "Actualizaciones";
 	$txtApp['appPrincipal']['msgReportarError'] = "Reportar Problema";
 	$txtApp['appPrincipal']['msgBarraCarga'] = "Listo";

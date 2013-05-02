@@ -124,15 +124,20 @@ body{font-family:Verdana, Geneva, sans-serif; font-size:11px;}
 			<input type="radio" name="rdbBusqueda" id="rdbBusqueda" value="nombre" checked="checked" />Por Nombre
 			<input type="radio" name="rdbBusqueda" id="rdbBusqueda" value="usuario" />Por usuario
 		</div>
-		<div style="height: 85px;padding: 5px;background: #fff;font-weight: bold;text-align: left;margin-top: 5px;border: 1px solid #666;">Grupos:
+		<div style="height: 125px;padding: 5px;background: #fff;font-weight: bold;text-align: left;margin-top: 5px;border: 1px solid #666;">Grupos:
 			<div style="height: 15px;padding: 3px;margin-top: 5px;"><a href="javascript:addGrupo()">Agregar Grupo</a></div>
-			<div style="height: 15px;padding: 3px;"><a href="javascript:consultaGrupos()">Consultar Grupos</a></div>
-			<div style="height: 15px;padding: 3px;"><a href="javascript:nuevaFuncionalidad()">A&ntilde;adir Funcionalidades</a></div>
+			<div style="height: 15px;padding: 3px;margin-left: 10px;"><a href="javascript:consultaGrupos()">Consultar Grupos</a></div>
+			<!--<div style="height: 15px;padding: 3px;"><a href="javascript:nuevaFuncionalidad()">Agregar Men&uacute;</a></div>
+			<div style="height: 15px;padding: 3px;margin-left: 10px;"><a href="javascript:agregarSubMenu()">Men&uacute;s:</a></div>-->
+			<div style="height: 15px;padding: 3px;"><a href="javascript:mostrarOpcionesMenu()">Men&uacute;s:</a></div>
+			<div style="height: 15px;padding: 3px;"><a href="javascript:verModulos()">Ver Modulos:</a></div>
 		</div>
-		<div style="height:85px;padding: 5px;background: #fff;font-weight: bold;text-align: left;margin-top: 5px;border: 1px solid #666;">Configuraci&oacute;n:
-			<div style="height: 15px;padding: 3px;margin-top: 5px;"><a href="javascript:manttoSistema('sitio_desactivado')">Mantenimiento</a></div>
-                        <div style="height: 15px;padding: 3px;"><a href="javascript:controlCambios()">Actualizaciones</a></div>
-                        <div style="height: 15px;padding: 3px;"><a href="javascript:consultaAct()">Listar Actualizaciones</a></div>
+		<div style="height:120px;padding: 5px;background: #fff;font-weight: bold;text-align: left;margin-top: 5px;border: 1px solid #666;">Configuraci&oacute;n:
+			<div style="height: 15px;padding: 3px;margin-top: 5px;"><a href="javascript:manttoSistema('sitio_desactivado')">Mantenimiento del Sistema</a></div>
+                        <div style="height: 15px;padding: 3px;"><a href="javascript:controlCambios()">Agregar Actualizaciones</a></div>
+                        <div style="height: 15px;padding: 3px;margin-left: 10px;"><a href="javascript:consultaAct()">Listar Actualizaciones</a></div>
+			<div style="height: 15px;padding: 3px;"><a href="javascript:agregarConfiguracion()">Agregar Configuracion</a></div>
+			<div style="height: 15px;padding: 3px;margin-left: 10px;"><a href="javascript:configuracionesGlobales()">Configuraciones globales</a></div>			
 		</div>
                 <div style="height: 150px;padding: 5px;background: #fff;font-weight: bold;text-align: left;margin-top: 5px;border: 1px solid #666;">Cat&aacute;logos
 			<div style="height: 15px;padding: 3px;margin-top: 5px;"><a href="javascript:nuevoProceso()">Cat. Procesos</a></div>
@@ -143,7 +148,7 @@ body{font-family:Verdana, Geneva, sans-serif; font-size:11px;}
 			<div style="height: 15px;padding: 3px;margin-left: 10px;"><a href="javascript:consultafalla()">Listar Fallas</a></div>
 		</div>
 	</div>
-	<div id="detalleUsuarios" style="position: relative;float: left;height: 99%;background: #FFF;margin: 2px;border: 1px solid #666;"></div>
+	<div id="detalleUsuarios" style="position: relative;float: left;height: 99%;background: #FFF;margin: 2px;border: 1px solid #666;overflow: auto;"></div>
 	<div id="consultaUsuarios"></div>
         <div id="modificaUsuario"></div>
         <div id="nip"></div>

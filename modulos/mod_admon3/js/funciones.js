@@ -221,33 +221,37 @@ function actualizaDatosUsuario(){
 function guardaGrupo(){
 	try{
 		var nombreGrupo=document.getElementById("nombreGrupo").value;
-		var claves2="";
-		for (var i=0;i<document.crearGrupo.elements.length;i++){
-			if (document.crearGrupo.elements[i].type=="checkbox"){
-				if (document.crearGrupo.elements[i].checked){
-					if (claves2=="")
-						claves2=claves2+document.crearGrupo.elements[i].value;
-					else
-						claves2=claves2+"|"+document.crearGrupo.elements[i].value;
+		if(nombreGrupo!=""){
+			var claves2="";
+			for (var i=0;i<document.crearGrupo.elements.length;i++){
+				if (document.crearGrupo.elements[i].type=="checkbox"){
+					if (document.crearGrupo.elements[i].checked){
+						if (claves2=="")
+							claves2=claves2+document.crearGrupo.elements[i].value;
+						else
+							claves2=claves2+","+document.crearGrupo.elements[i].value;
+					}
 				}
 			}
-		}
-		if(claves2==""){
-			alert("Verifique la informacion para poder crear el grupo");
+			if(claves2==""){
+				alert("Verifique la informacion para poder crear el grupo");
+			}else{
+				alert(claves2);
+				
+				var filtro = $('[name="grupo"]:checked').val();
+				if(filtro=="area"){
+					nombreGrupo="Depto_"+nombreGrupo;				
+				}
+				div="detalleUsuarios";
+				url="controladorUsuarios.php";
+				parametros="action=guardaGrupo&nombreGrupo="+nombreGrupo+"&permisos="+claves2;
+				metodo="POST";
+				//ajax
+				ajaxApp(div,url,parametros,metodo);
+			}		
 		}else{
-			//alert(claves2);
-			var filtro = $('[name="grupo"]:checked').val();
-			if(filtro=="area"){
-				nombreGrupo="Depto_"+nombreGrupo;				
-			}
-			div="detalleUsuarios";
-			url="controladorUsuarios.php";
-			parametros="action=guardaGrupo&nombreGrupo="+nombreGrupo+"&permisos="+claves2;
-			metodo="POST";
-			//ajax
-			ajaxApp(div,url,parametros,metodo);
-		}		
-
+			alert("Capture el nombre del grupo para poder continuar");
+		}
 		
 	}catch(e){
 		alert("Verifique la informacion para poder crear el grupo");
@@ -268,37 +272,35 @@ function modificaGrupo(idGrupo){
 	ajaxApp(div,url,parametro,metodo);
 }
 function actualizaGrupo(idGrupo){
+	
 	try{
-		var claves3="";
+		var claves2="";
 		for (var i=0;i<document.frmModificaGrupo.elements.length;i++){
 			if (document.frmModificaGrupo.elements[i].type=="checkbox"){
 				if (document.frmModificaGrupo.elements[i].checked){
-					if (claves3=="")
-						claves3=claves3+document.frmModificaGrupo.elements[i].value;
+					if (claves2=="")
+						claves2=claves2+document.frmModificaGrupo.elements[i].value;
 					else
-						claves3=claves3+"|"+document.frmModificaGrupo.elements[i].value;
+						claves2=claves2+","+document.frmModificaGrupo.elements[i].value;
 				}
 			}
 		}
-		if(claves3==""){
+		if(claves2==""){
 			alert("Verifique la informacion para poder crear el grupo");
 		}else{
-			//alert(claves3);
+			//alert(claves2);
 			div="detalleUsuarios";
-			url="controladorUsuarios.php";
-			parametros="action=actualizaGrupo&permisos="+claves3+"&idGrupo="+idGrupo;
-			metodo="POST";
-			//ajax
+			url="controladorUsuarios.php";				
+			parametros="action=actualizaGrupo&permisos="+claves2+"&idGrupo="+idGrupo;
+			metodo="POST";			
 			ajaxApp(div,url,parametros,metodo);
 		}
 	}catch(e){
-		alert("Excepcion: Verifique la informacion para poder crear el grupo");
+		alert("Verifique la informacion para poder modificar el grupo");
 	}
-	
-	
 }
 function nuevaFuncionalidad(){
-	div="detalleUsuarios";
+	div="divSubMenu";
 	url="controladorUsuarios.php";
 	parametros="action=nuevaFuncionForm";
 	metodo="GET";
@@ -309,18 +311,18 @@ function guardaFuncion(){
 		var txtModulo=document.getElementById("txtModulo").value;
 		var txtPer=document.getElementById("txtPer").value;
 		var txtMenu=document.getElementById("txtMenu").value;
-		var txtRuta=document.getElementById("txtRuta").value;
-		var txtImagen=document.getElementById("txtImagen").value;
-			if((txtModulo=="")){
-				alert("Error:\nCampo Obligatorio.");
-			}else{	
-				div="detalleUsuarios";
-				url=="controladorUsuarios.php";
-				parametros="action=guardaRegFuncion&txtModulo="+txtModulo+"&txtPer="+txtPer+"&txtMenu="+txtMenu+"&txtRuta="+txtRuta+"&txtImagen="+txtImagen;
-				metodo="POST";
-				//alert(parametros);
-				ajaxApp(div,url,parametros,metodo);	
-			}
+		//var txtRuta=document.getElementById("txtRuta").value;
+		//var txtImagen=document.getElementById("txtImagen").value;
+		if((txtModulo=="")){
+			alert("Error:\nCampo Obligatorio.");
+		}else{	
+			div="divSubMenu";
+			url=="controladorUsuarios.php";
+			//parametros="action=guardaRegFuncion&txtModulo="+txtModulo+"&txtPer="+txtPer+"&txtMenu="+txtMenu+"&txtRuta="+txtRuta+"&txtImagen="+txtImagen;
+			parametros="action=guardaRegFuncion&txtModulo="+txtModulo+"&txtPer="+txtPer+"&txtMenu="+txtMenu;
+			metodo="POST";
+			ajaxApp(div,url,parametros,metodo);	
+		}
 	}catch(e){ alert("Error en la funcion")}
 }
 
@@ -597,4 +599,99 @@ function cambioStatus(idReg,status_actual){
 				ajaxApp('detalleUsuarios','controladorUsuarios.php',datos_url,'GET');
 			}		
 		}
+}
+function configuracionesGlobales(){
+	ajaxApp("detalleUsuarios","controladorUsuarios.php","action=mostrarConfiguracionesGlobales","POST");	
+}
+function modificarValorConf(nombreConf,valor,id){
+	if(confirm("Realmente desea cambiar la configuracion de: "+nombreConf)){
+		nvoValor=prompt("Introduzca el nuevo valor para la configuracion");
+		if(nvoValor=="" || nvoValor==null){
+			alert("Error: Se debe de colocar una cantidad para la configuracion");
+		}else{
+			ajaxApp("detalleUsuarios","controladorUsuarios.php","action=modificarValorConf&id="+id+"&nvoValor="+nvoValor,"POST");
+		}
+	}
+}
+function agregarConfiguracion(){
+	ajaxApp("detalleUsuarios","controladorUsuarios.php","action=formAgergarConf","POST");	
+}
+function guardarConfiguracionGlobal(){
+	nombreConf=$("#txtNombreConfiguracion").val();
+	valor=$("#txtValorConfiguracion").val();
+	descripcion=$("#txtDescripcion").val();
+	if(nombreConf=="" || valor=="" || descripcion==""){
+		alert("Debe llenar los campos para poder generar la nueva configuracion");
+	}else{
+		ajaxApp("detalleUsuarios","controladorUsuarios.php","action=guardarNuevaConf&nombreConf="+nombreConf+"&valor="+valor+"&descripcion="+descripcion,"POST");
+	}
+}
+function agregarSubMenu(){
+	ajaxApp("detalleUsuarios","controladorUsuarios.php","action=agregarSubMenu","POST");	
+}
+function agregarItemSubMenu(idElemento){
+	ajaxApp("divSubMenu","controladorUsuarios.php","action=agregarItemSubMenu&idElemento="+idElemento,"POST");	
+}
+function guardarSubMenu(){
+	txtIdElemento=$("#txtIdElemento").val();
+	txtNombreSubMenu=$("#txtNombreSubMenu").val();
+	txtRuta=$("#txtRuta").val();
+	cboStatusSubmenu=$("#cboStatusSubmenu").val();
+	if(txtIdElemento=="" || txtNombreSubMenu=="" || txtRuta=="" || cboStatusSubmenu==""){
+		alert("Error: Verifique que no existan espacios en blanco");
+	}else{
+		ajaxApp("divGuardadoSubMenu","controladorUsuarios.php","action=guardarSubMenu&idElemento="+txtIdElemento+"&txtNombreSubMenu="+txtNombreSubMenu+"&txtRuta="+txtRuta+"&cboStatusSubmenu="+cboStatusSubmenu,"POST");
+	}
+}
+function modificarSubmenu(id){
+	ajaxApp("divSubMenu","controladorUsuarios.php","action=modificarSubMenu&id="+id,"POST");
+}
+function guardarSubMenuActualizacion(){
+	txtIdElementoAct=$("#txtIdElementoAct").val();
+	txtNombreSubMenuAct=$("#txtNombreSubMenuAct").val();
+	txtRutaAct=$("#txtRutaAct").val();
+	cboStatusSubmenuAct=$("#cboStatusSubmenuAct").val();
+	if(txtIdElementoAct=="" || txtNombreSubMenuAct=="" || txtRutaAct=="" || cboStatusSubmenuAct==""){
+		alert("Error: Verifique que no existan espacios en blanco");
+	}else{
+		ajaxApp("divGuardadoSubMenu","controladorUsuarios.php","action=guardarSubMenuAct&idElementoAct="+txtIdElementoAct+"&txtNombreSubMenuAct="+txtNombreSubMenuAct+"&txtRutaAct="+txtRutaAct+"&cboStatusSubmenuAct="+cboStatusSubmenuAct,"POST");
+	}
+}
+function seleccionarMenuCompleto(nRegMenu,idMenu){	
+	for(i=0;i<nRegMenu;i++){
+		comboActual="cbo"+idMenu+i;		
+		$("#"+comboActual).attr("checked","true");
+	}
+}
+function quitarSeleccionMenuCompleto(nRegMenu,idMenu){
+	for(i=0;i<nRegMenu;i++){
+		comboActual="cbo"+idMenu+i;		
+		$("#"+comboActual).removeAttr("checked","false");
+	}
+}
+function mostrarOpcionesMenu(){
+	ajaxApp("detalleUsuarios","controladorUsuarios.php","action=mostrarOpcionesMenu","POST");
+}
+function modificarMenuTitulo(idMenuTitulo){
+	ajaxApp("divSubMenu","controladorUsuarios.php","action=modificarMenuTitulo&idMenuTitulo="+idMenuTitulo,"POST")
+}
+function guardarMenuTituloActualizacion(){
+	txtNombreMenuAct=$("#txtNombreMenuAct").val();
+	numeroMenuAct=$("#txtNumeroMenuAct").val();
+	idElementoAct=$("#txtIdElementoMenuTitulo").val();
+	if(txtNombreMenuAct=="" || numeroMenuAct==""){
+		alert("No deje espacios en blanco");
+	}else{
+		if(!isNaN(numeroMenuAct)){
+			ajaxApp("divSubMenu","controladorUsuarios.php","action=guardarModificarMenuTitulo&nombreMenuTitulo="+txtNombreMenuAct+"&numeroMenuAct="+numeroMenuAct+"&idElementoAct="+idElementoAct,"POST");
+		}else{
+			alert("Error el numero de menu debe ser un numero");
+		}
+	}
+}
+function verModulos(){
+	ajaxApp("detalleUsuarios","controladorUsuarios.php","action=verModulosSistema","POST")
+}
+function leerArchivo(archivo){
+	ajaxApp("contenidoArchivo","controladorUsuarios.php","action=verArchivo&archivo="+archivo,"POST")
 }

@@ -54,7 +54,7 @@
 				$_SESSION[$txtApp['session']['sexoUsuario']]=$sexo;
 				$_SESSION[$txtApp['session']['nominaUsuario']]=$nomina;				
 				//header('Location:../../inicio.php?='.$SID.'');
-				header('Location:../../modulos/main-4.php?='.$SID.'');
+				header('Location:../../modulos/main-4.php');
 				//header('Location:../../modulos/mod_inicio/index.php?='.$SID.'');
 				exit;
 			}else{

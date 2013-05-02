@@ -101,9 +101,9 @@
 			$txtModulo=$_POST['txtModulo'];
 			$txtPer=$_POST['txtPer'];
 			$txtMenu=$_POST['txtMenu'];
-			$txtRuta=$_POST['txtRuta'];
-			$txtImagen=$_POST['txtRuta'];
-			$objModeloUsuarios->guardarFuncion($txtModulo,$txtPer,$txtMenu,$txtRuta,$txtImagen);
+			//$txtRuta=$_POST['txtRuta'];
+			//$txtImagen=$_POST['txtRuta'];
+			$objModeloUsuarios->guardarFuncion($txtModulo,$txtPer,$txtMenu);
 	}
 	if($_GET['action']=="manttoSistema"){
 		$objModeloUsuarios->manttoSistema($_GET['sitio']);
@@ -237,6 +237,58 @@ if($_GET['action']=="cambioStatusAct"){
 			$status=$_GET['status'];
 			$objModeloUsuarios->activarStatus($idReg,$status);
 	}
-	
-	
+	if($_POST["action"]=="mostrarConfiguracionesGlobales"){
+		$objModeloUsuarios->mostrarConfiguracionesGlobales();
+	}
+	if($_POST["action"]=="modificarValorConf"){
+		print_r($_POST);
+		$objModeloUsuarios->modificarValorConfiguracion($_POST["id"],$_POST["nvoValor"]);
+	}
+	if($_POST["action"]=="formAgergarConf"){
+		$objModeloUsuarios->formAgergarConf();
+	}
+	if($_POST["action"]=="guardarNuevaConf"){
+		$objModeloUsuarios->guardaConfNueva($_POST["nombreConf"],$_POST["valor"],$_POST["descripcion"]);
+	}
+	if($_POST["action"]=="agregarSubMenu"){
+		$objModeloUsuarios->mostrarOpcionesMenu();
+	}
+	if($_POST["action"]=="agregarItemSubMenu"){
+		$objModeloUsuarios->agregarItemSubmenu($_POST["idElemento"]);
+	}
+	if($_POST["action"]=="guardarSubMenu"){
+		//print_r($_POST);
+		$idElemento=$_POST["idElemento"];
+		$txtNombreSubMenu=$_POST["txtNombreSubMenu"];
+		$txtRuta=$_POST["txtRuta"];
+		$cboStatusSubmenu=$_POST["cboStatusSubmenu"];
+		$objModeloUsuarios->guardarSubmenu($idElemento,$txtNombreSubMenu,$txtRuta,$cboStatusSubmenu);
+	}
+	if($_POST["action"]=="modificarSubMenu"){
+		//print_r($_POST);
+		$objModeloUsuarios->modificarSubmenu($_POST["id"]);
+	}
+	if($_POST["action"]=="guardarSubMenuAct"){
+		//print_r($_POST);
+		$idElementoAct=$_POST["idElementoAct"];
+		$txtNombreSubMenuAct=$_POST["txtNombreSubMenuAct"];
+		$txtRutaAct=$_POST["txtRutaAct"];
+		$cboStatusSubmenuAct=$_POST["cboStatusSubmenuAct"];
+		$objModeloUsuarios->guardarSubmenuAct($idElementoAct,$txtNombreSubMenuAct,$txtRutaAct,$cboStatusSubmenuAct);
+	}
+	if($_POST["action"]=="mostrarOpcionesMenu"){
+		$objModeloUsuarios->mostrarOpcionesMenu();
+	}
+	if($_POST["action"]=="modificarMenuTitulo"){
+		$objModeloUsuarios->modificaMenuTitulo($_POST["idMenuTitulo"]);
+	}
+	if($_POST["action"]=="guardarModificarMenuTitulo"){
+		$objModeloUsuarios->guardarModificacionMenuTitulo($_POST["nombreMenuTitulo"],$_POST["numeroMenuAct"],$_POST["idElementoAct"]);
+	}
+	if($_POST["action"]=="verModulosSistema"){
+		$objModeloUsuarios->verModulosSistema();
+	}
+	if($_POST["action"]=="verArchivo"){
+		$objModeloUsuarios->leer_fichero_completo($_POST["archivo"]);
+	}
 ?>
