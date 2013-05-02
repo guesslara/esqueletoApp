@@ -91,7 +91,7 @@
 .estiloMensajeModulo{float: left;border: 0px solid #ff0000;font-size: 14px;margin-top: 5px;}
 .iconoUsuarioApp{float: right;height: 32.5px; width: 32px;border: 1px solid red;margin-top: -4px;}
 .iconoUsuarioAppCerrar{float: right;height: 32.5px; width: 32px;border: 0px solid red;margin-top: -4px;text-align: center;}
-.datosUsuarioAppPrincipal{float: right;border: 1px solid #ff0000;height: 18px;padding: 8px;font-size: 12px;margin-top: -4px;}
+.datosUsuarioAppPrincipal{float: right;border: 0px solid #ff0000;height: 18px;padding: 8px;font-size: 12px;margin-top: -4px;}
 #datosUsuarioAppPrincipal{position: relative;border: 0px solid blue; width: 99.8%; height: 50%;}
 .contenedorVentanaMDIApp{background: #FFF; width:99.8%; height: 99.3%; overflow:auto;border: 0px solid #ff0000;z-index: }
 #barraestado2{position: absolute;padding: 4px;bottom: 1px;height: 20px;width: 99.2%;border: 1px solid #000;background: #666;}
