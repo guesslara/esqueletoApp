@@ -1,6 +1,9 @@
 <?php
     /*
-    La clase verifica si el usuario ha personalizado su password en el sistema
+     *La clase verifica si existen actualizaciones nuevas en el sistema y las muestra en pantalla a modo de ventana modal
+     *Fecha 10 Noviembre 2011
+     *Autor: Gerardo Lara
+     *    
     */
     class verificaActualizaciones{
         
@@ -49,8 +52,5 @@
 			</div>
 	    </div>";
 	}
-    }//fin de la clase
-    
-    //$objActualizaciones= new verificaActualizaciones();
-    //$objActualizaciones->verificaActualizaciones();
+    }//fin de la clase    
 ?>

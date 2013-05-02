@@ -1,6 +1,12 @@
 <?php
     /*
-    La clase verifica si el usuario ha personalizado su password en el sistema
+     *La clase verifica si el usuario ha personalizado su password en el sistema y si este esta trabajando con el password por default
+     *Fecha 10 Noviembre 2011
+     *Autor: Gerardo Lara
+     *---------------------------------------------------------
+     *Modificacion para encontrar el nombre del proyecto que se selecciona
+     *Fecha 7 Noviembre 2012
+     *Autor:Gerardo Lara
     */
     class verificaCargaInicial{
         
@@ -10,6 +16,17 @@
             }
 	}//fin funcion
         
+	public function dameNombreProyecto($idProyecto){	    
+	    $sql="select * from proyecto where id_proyecto='".$idProyecto."'";
+	    $res=mysql_query($sql,$this->conectarBdVerificaCargaInicial());
+	    $row=mysql_fetch_array($res);
+	    return $row["nombre_proyecto"];
+	}
+	
+	public function verificaNuevasActualizaciones(){
+	    $sql="";
+	}
+	
         public function msgCambiarPassword(){
             echo "<style type='text/css'>#transparenciaGeneral{background: url(../../../img/desv.png) repeat;position: absolute; left: 0; top: 0; width: 100%; height: 100%; z-index:20;}
                   #barraTitulo1{ height:20px; padding:5px; color:#FFF; font-size:12px; background:#000;}
@@ -31,6 +48,17 @@
 				</div>
 			</div>
 	    </div>";
+	}
+	
+	private function conectarBdVerificaCargaInicial(){
+	    require("../../includes/config.inc.php");
+	    $link=mysql_connect($host,$usuario,$pass);
+	    if($link==false){
+		echo "Error en la conexion a la base de datos";
+	    }else{
+		mysql_select_db($db);
+		return $link;
+	    }				
 	}
     }//fin de la clase
 ?>    
