@@ -20,6 +20,26 @@
 			}
 		}//fin construct
 		
+		function eliminaMenu($idMenu){
+			$sqlDelSubMenu="DELETE FROM gruposmods WHERE id = '".$idMenu."'";
+			$resDelSubMenu=mysql_query($sqlDelSubMenu,$this->conexion);
+			if($resDelSubMenu){
+				echo "<script type='text/javascript'> alert('Menu Eliminado'); mostrarOpcionesMenu(); </script>";
+			}else{
+				echo "<script type='text/javascript'> alert('Error al Eliminar el Menu'); </script>";
+			}
+		}
+		
+		function eliminaSubMenu($idSubMenu){
+			$sqlDelSubMenu="DELETE FROM submenu WHERE id = '".$idSubMenu."'";
+			$resDelSubMenu=mysql_query($sqlDelSubMenu,$this->conexion);
+			if($resDelSubMenu){
+				echo "<script type='text/javascript'> alert('Submenu Eliminado'); mostrarOpcionesMenu(); </script>";
+			}else{
+				echo "<script type='text/javascript'> alert('Error al Eliminar el Submenu'); </script>";
+			}
+		}
+		
 		function leer_fichero_completo($nombre_fichero){						
 			$pI=""; $pF="";			
 			$texto = file_get_contents($nombre_fichero); //Leemos y guardamos en $texto el archivo texto.txt
@@ -239,8 +259,11 @@
 				$resSub=mysql_query($sqlSub,$this->conexion);
 ?>
 					<tr>
-						<td style="text-align: left;background: #f0f0f0;border: 1px solid #CCC;height: 20px;padding: 5px;">=><?=$row["numeroMenu"]." - ";?><a href="#" onclick="modificarMenuTitulo('<?=$row["id"]?>')" title="Modificar Menu" style="color: blue;font-size: 12px;text-decoration: none;"><?=$row["modulo"];?></a></td>
-						<td style="text-align: center;"><a href="#" title="Agregar Submenu" onclick="agregarItemSubMenu('<?=$row["id"];?>')" style="color: blue;"><img src="../../img/add.png" border="0" /></a></td>					
+						<td style="text-align: left;background: #f0f0f0;border: 1px solid #CCC;height: 20px;padding: 5px;">
+							<a href="#" title="Eliminar Menu" onclick="eliminarMenu('<?=$row["id"];?>','<?=$row["modulo"];?>')" style="color: blue;"><img src="../../img/icon_delete.gif" border="0" /></a>
+							=><?=$row["numeroMenu"]." - ";?><a href="#" onclick="modificarMenuTitulo('<?=$row["id"]?>')" title="Modificar Menu" style="color: blue;font-size: 12px;text-decoration: none;"><?=$row["modulo"];?></a>&nbsp;							
+						</td>
+						<td style="text-align: center;"><a href="#" title="Agregar Submenu" onclick="agregarItemSubMenu('<?=$row["id"];?>')" style="color: blue;"><img src="../../img/add.png" border="0" /></a></td>
 					</tr>
 					<tr>
 						<td colspan="2">
@@ -249,7 +272,10 @@
 				if(mysql_num_rows($resSub)!=0){
 					while($rowsub=mysql_fetch_array($resSub)){
 ?>
-						<div style="height: 15px;padding: 5px;">==>&nbsp;<a href="#" onclick="modificarSubmenu('<?=$rowsub['id']?>')" title="Modificar Submen&uacute;" style="font-size: 12px;"><?=$rowsub["nombreSubMenu"]?></a></div>
+						<div style="height: 15px;padding: 5px;">							
+							==><a href="#" title="Eliminar Menu" onclick="eliminaSubmenu('<?=$rowsub['id']?>','<?=$rowsub["nombreSubMenu"];?>')" style="color: blue;"><img src="../../img/icon_delete.gif" border="0" /></a>&nbsp;
+							<a href="#" title="Modificar Submen&uacute;" onclick="agregarItemSubMenu('<?=$row["id"];?>')" style="font-size: 12px;"><?=$rowsub["nombreSubMenu"]?></a>
+						</div>
 <?
 					}
 				}

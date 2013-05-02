@@ -695,3 +695,13 @@ function verModulos(){
 function leerArchivo(archivo){
 	ajaxApp("contenidoArchivo","controladorUsuarios.php","action=verArchivo&archivo="+archivo,"POST")
 }
+function eliminaSubmenu(idSubMenu,nombreSubMenu){
+	if(confirm("Esta realmente seguro de borrar el Submenu: "+nombreSubMenu)){
+		ajaxApp("divSubMenu","controladorUsuarios.php","action=eliminaSubMenu&idSubMenu="+idSubMenu,"POST");		
+	}
+}
+function eliminarMenu(id,modulo){
+	if(confirm("Esta realmente seguro de borrar el Menu: "+modulo)){
+		ajaxApp("divSubMenu","controladorUsuarios.php","action=eliminaMenu&idMenu="+id,"POST");		
+	}
+}

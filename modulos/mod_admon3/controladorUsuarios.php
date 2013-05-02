@@ -291,4 +291,10 @@ if($_GET['action']=="cambioStatusAct"){
 	if($_POST["action"]=="verArchivo"){
 		$objModeloUsuarios->leer_fichero_completo($_POST["archivo"]);
 	}
+	if($_POST["action"]=="eliminaSubMenu"){
+		$objModeloUsuarios->eliminaSubMenu($_POST["idSubMenu"]);
+	}
+	if($_POST["action"]=="eliminaMenu"){
+		$objModeloUsuarios->eliminaMenu($_POST["idMenu"]);
+	}
 ?>
