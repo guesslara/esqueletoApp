@@ -306,11 +306,11 @@
 		}
 		
 		public function formAgergarConf(){
-			$objVerifica=new verificaUsuario();
-			$objVerifica->cargaArchivosClase();
-			$objVerifica->muestraFormularioUsuario();
+			//$objVerifica=new verificaUsuario();
+			//$objVerifica->cargaArchivosClase();
+			//$objVerifica->muestraFormularioUsuario();
 ?>
-			<table border="0" cellpadding="1" cellspacing="1" width="600" style="margin: 5px;font-size: 12px;border: 1px solid #000;">
+			<table align="center" border="0" cellpadding="1" cellspacing="1" width="600" style="margin: 5px;font-size: 12px;border: 1px solid #000;">
 				<tr>
 					<td colspan="2" style="height: 20px;padding: 5px;border: 1px solid #000;background: #000;color: #fff;">Agregar Configuracion Global para el Sistema</td>
 				</tr>
@@ -330,10 +330,20 @@
 					<td colspan="2"></td>					
 				</tr>
 				<tr>
-					<td colspan="2"><input type="button" value="Guardar" onclick="guardarConfiguracionGlobal()"></td>					
+					<td colspan="2" align="right"><input type="button" value="Guardar" onclick="guardarConfiguracionGlobal()"></td>					
 				</tr>
 			</table>	
 <?
+		}
+		
+		public function eliminarValorConfiguracion($id,$nvoValor){			
+			$sql="DELETE FROM configuracionglobal where id='".$id."'";
+			$res=mysql_query($sql,$this->conexion);
+			if($res){
+				echo "<script type='text/javascript'> alert('Registro Eliminado'); configuracionesGlobales(); </script>";
+			}else{
+				echo "<script type='text/javascript'> alert('Error al eliminar el Registro Seleccionado'); </script>";
+			}
 		}
 		
 		public function modificarValorConfiguracion($id,$nvoValor){
@@ -354,7 +364,7 @@
 				echo "No existen configuraciones globales";
 			}else{
 ?>
-				<table border="0" cellpadding="1" cellspacing="1" width="600" style="margin: 5px;font-size: 12px;border: 1px solid #000;">
+				<table border="0" cellpadding="1" cellspacing="1" width="650" style="margin: 5px;font-size: 12px;border: 1px solid #000;">
 					<tr>
 						<td colspan="4" style="height: 20px;padding: 5px;">Configuraciones Globales para el Sistema</td>
 					</tr>
@@ -368,13 +378,14 @@
 				while($rowC=mysql_fetch_array($resC)){					
 ?>
 					<tr>
-						<td style="border-bottom: 1px solid #000;border-right: 1px solid #000;height: 25px;padding: 5px;">
+						<td style="text-align: center;border-bottom: 1px solid #000;border-right: 1px solid #000;height: 25px;padding: 5px;">
 <?
 					if($rowC["nombreConf"]=="sitio_desactivado"){
 						echo "N/A";
 					}else{
 ?>
-						<a href="#" onclick="modificarValorConf('<?=$rowC["nombreConf"]?>','<?=$rowC["valor"];?>','<?=$rowC["id"]?>')" title="Modificar">Modificar</a>
+						<a href="#" onclick="modificarValorConf('<?=$rowC["nombreConf"]?>','<?=$rowC["valor"];?>','<?=$rowC["id"]?>')" title="Modificar">Modificar</a>&nbsp;|&nbsp;
+						<a href="#" onclick="eliminarValorConf('<?=$rowC["nombreConf"]?>','<?=$rowC["valor"];?>','<?=$rowC["id"]?>')" title="Eliminar">Eliminar</a>
 <?
 					}
 ?>							
@@ -1152,37 +1163,34 @@
 			$sql_sitio="select valor from configuracionglobal where nombreConf='".$sitio."'";
 			$result_sitio=mysql_query($sql_sitio,$this->conexion);
 			$fila_sitio=mysql_fetch_array($result_sitio);	
-?>
-			<div style="height:20px; color:#FFFFFF; background:#000000; font-size:12px;">
-            	<div style="float:left;">Configuraci&oacute;n Global</div>
-                <div style="float:right;"><a href="javascript:cerrarDivMantto()"><img src="../../img/close.gif" border="0" /></a></div>
-            </div>
-            <div style="margin:4px; background:#FFFFFF; overflow:auto;"><br />
-                <form name="frmSitioGlobal" id="frmSitioGlobal">
-                <input type="hidden" name="sitio" id="sitio" value="<?=$sitio;?>" />
-                <table width="678" border="0" cellspacing="1" cellpadding="1" align="center" style="font-size:12px;">
-                  <tr>
-                    <td colspan="2" align="left" style="height:30px; background:#000000; color:#FFFFFF;">Configuraci&oacute;n del Sitio</td>
-                  </tr>
-                  <tr>
-                  	<td colspan="2" style="height:30px; border:1px solid #CCCCCC; background:#f0f0f0;"><strong>Valor actual: <?=$fila_sitio['valor'];?></strong></td>
-                  </tr>
-                  <tr>
-                    <td width="201" style="height:25px; border:1px solid #CCCCCC; background:#f0f0f0;">Sitio desactivado</td>
-                    <td width="464"><input type="radio" value="No" name="rdbSitio" id="rdbSitio" />No <input type="radio" value="Si" name="rdbSitio" id="rdbSitio" />Si</td>
-                  </tr>
-                  <tr>
-                    <td style="height:25px; border:1px solid #CCCCCC; background:#f0f0f0;">Mensaje de Sitio desactivado</td>
-                    <td><textarea name="obsSitio" id="obsSitio" cols="40" rows="2"></textarea></td>
-                  </tr>
-                  <tr>
-                  	<td colspan="2"><hr style="background:#CCC;" /></td>
-                  </tr>
-                  <tr>
-                  	<td colspan="2" align="right"><input type="button" value="Guardar" onclick="guardaMantto()" /></td>
-                  </tr>
-                </table></form>
-            </div>
+?>			
+			<div style="margin:4px; background:#FFFFFF; overflow:auto;"><br />
+				<form name="frmSitioGlobal" id="frmSitioGlobal">
+					<input type="hidden" name="sitio" id="sitio" value="<?=$sitio;?>" />
+					<table width="678" border="0" cellspacing="1" cellpadding="1" align="center" style="font-size:12px;">
+						<tr>
+						  <td colspan="2" align="left" style="height:30px; background:#000000; color:#FFFFFF;">Configuraci&oacute;n del Sitio</td>
+						</tr>
+						<tr>
+						      <td colspan="2" style="height:30px; border:1px solid #CCCCCC; background:#f0f0f0;"><strong>Valor actual: <?=$fila_sitio['valor'];?></strong></td>
+						</tr>
+						<tr>
+						  <td width="201" style="height:25px; border:1px solid #CCCCCC; background:#f0f0f0;">Sitio desactivado</td>
+						  <td width="464"><input type="radio" value="No" name="rdbSitio" id="rdbSitio" />No <input type="radio" value="Si" name="rdbSitio" id="rdbSitio" />Si</td>
+						</tr>
+						<tr>
+						  <td style="height:25px; border:1px solid #CCCCCC; background:#f0f0f0;">Mensaje de Sitio desactivado</td>
+						  <td><textarea name="obsSitio" id="obsSitio" cols="40" rows="2"></textarea></td>
+						</tr>
+						<tr>
+						      <td colspan="2"><hr style="background:#CCC;" /></td>
+						</tr>
+						<tr>
+						      <td colspan="2" align="right"><input type="button" value="Guardar" onclick="guardaMantto()" /></td>
+						</tr>
+					</table>
+				</form>
+			</div>
 <?php			
 		}//fin de la funcion
 public function guardarMantto($valor,$comentario,$sitio){
@@ -1198,42 +1206,42 @@ public function guardarMantto($valor,$comentario,$sitio){
 			}
 		}
 
-		function controlCambios(){
+	function controlCambios(){
 ?>
-		<form name="frmSitioControlCambios" id="frmSitioControlCambios">
-        	<table width="100%" border="0" cellspacing="1" cellpadding="1" align="center">
-            	<tr>
-                	<td colspan="2" style="height:30px; background:#000000; color:#FFFFFF;">Control de Cambios Sistema<input type="hidden" name="fechaAct" id="fechaAct" value="<?=date("Y-m-d")." / ".date("H:i:s");?>" /></td>
-                </tr>
-                <tr>
-                	<td colspan="2" style="height:30px; border:1px solid #CCCCCC; background:#f0f0f0;">Descripci&oacute;n de las actualizaciones:</td>
-                </tr>
-                <tr>
-                    <td style="height:25px; border:1px solid #CCCCCC; background:#f0f0f0;">Titulo de la Actualizaci&oacute;n</td>
-                    <td><input type="text" name="txtTitulo" id="txtTitulo" style="width:125px;" /></td>
-                </tr>
-                <tr>
-                    <td style="height:25px; border:1px solid #CCCCCC; background:#f0f0f0;">Status</td>
-                    <td>
-                    <select name="cboStatus" id="cboStatus" style="width:125px;">
-                    	<option value="--" selected="selected">Selecciona</option>
-                        <option value="Nueva">Nueva</option>
-                        <option value="Terminada">Terminada</option>
-                    </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="height:25px; border:1px solid #CCCCCC; background:#f0f0f0;">Actualizaciones</td>
-                    <td><textarea name="obsAct" id="obsAct" cols="60" rows="5"></textarea></td>
-                </tr>
-                <tr>
-                  	<td colspan="2"><hr style="background:#CCC;" /></td>
-                 </tr>
-                 <tr>
-                  	<td colspan="2" align="right"><input type="button" value="Guardar" onclick="guardaActualizaciones()" /></td>
-                 </tr>
-            </table>
-        </form> 
+		<form name="frmSitioControlCambios" id="frmSitioControlCambios"><br>
+			<table width="600" border="0" cellspacing="1" cellpadding="1" align="center" style="font-size: 10px;">
+				<tr>
+					<td colspan="2" style="height:30px; background:#000000; color:#FFFFFF;">Control de Cambios Sistema<input type="hidden" name="fechaAct" id="fechaAct" value="<?=date("Y-m-d")." / ".date("H:i:s");?>" /></td>
+				</tr>
+				<tr>
+					<td colspan="2" style="height:30px; border:1px solid #CCCCCC; background:#f0f0f0;">Descripci&oacute;n de las actualizaciones:</td>
+				</tr>
+				<tr>
+				    <td style="height:25px; border:1px solid #CCCCCC; background:#f0f0f0;">Titulo de la Actualizaci&oacute;n</td>
+				    <td><input type="text" name="txtTitulo" id="txtTitulo" style="width:125px;" /></td>
+				</tr>
+				<tr>
+				    <td style="height:25px; border:1px solid #CCCCCC; background:#f0f0f0;">Status</td>
+				    <td>
+				    <select name="cboStatus" id="cboStatus" style="width:125px;">
+					<option value="--" selected="selected">Selecciona</option>
+					<option value="Nueva">Nueva</option>
+					<option value="Terminada">Terminada</option>
+				    </select>
+				    </td>
+				</tr>
+				<tr>
+				    <td style="height:25px; border:1px solid #CCCCCC; background:#f0f0f0;">Actualizaciones</td>
+				    <td><textarea name="obsAct" id="obsAct" cols="60" rows="5"></textarea></td>
+				</tr>
+				<tr>
+					<td colspan="2"><hr style="background:#CCC;" /></td>
+				</tr>
+				<tr>
+					<td colspan="2" align="right"><input type="button" value="Guardar" onclick="guardaActualizaciones()" /></td>
+				</tr>
+			</table>
+		</form> 
 <?		
 	}
 	
@@ -1989,16 +1997,3 @@ public function guardarModProc($txtDes,$id_proc){
 	}//final de clase
 //$objModeloUsuarios=new modeloUsuarios($host,$usuario,$pass,$db);
 ?>	
-	
-	
-	
-
-
-
-	
-
-
-		
-	
-
-	

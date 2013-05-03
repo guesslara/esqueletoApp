@@ -335,13 +335,15 @@ function manttoSistema(nombreConf){
 }
 function guardaMantto(){
 	//se recupera el valor del radio
-	var valor = $("input[@name=rdbSitio]:checked").val();
+	//var valor = $("input[@name=rdbSitio]:checked").val();
+	var valor = $("input[name='rdbSitio']:checked").val(); 
 	var comentario=document.getElementById("obsSitio").value;
 	var sitio=document.getElementById("sitio").value;
 	div="detalleUsuarios";
 	url="controladorUsuarios.php";
 	parametros="action=guardarMantto&valor="+valor+"&comentario="+comentario+"&sitio="+sitio;
 	metodo="POST";	
+	//alert(parametros);
 	ajaxApp(div,url,parametros,metodo);
 }
 function controlCambios(){
@@ -611,6 +613,11 @@ function modificarValorConf(nombreConf,valor,id){
 		}else{
 			ajaxApp("detalleUsuarios","controladorUsuarios.php","action=modificarValorConf&id="+id+"&nvoValor="+nvoValor,"POST");
 		}
+	}
+}
+function eliminarValorConf(nombreConf,valor,id){
+	if(confirm("Realmente desea eliminar la configuracion de: "+nombreConf)){		
+		ajaxApp("detalleUsuarios","controladorUsuarios.php","action=eliminarValorConf&id="+id,"POST");		
 	}
 }
 function agregarConfiguracion(){

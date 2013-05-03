@@ -241,8 +241,13 @@ if($_GET['action']=="cambioStatusAct"){
 		$objModeloUsuarios->mostrarConfiguracionesGlobales();
 	}
 	if($_POST["action"]=="modificarValorConf"){
-		print_r($_POST);
+		//print_r($_POST);
 		$objModeloUsuarios->modificarValorConfiguracion($_POST["id"],$_POST["nvoValor"]);
+	}
+	//print_r($_POST);
+	if($_POST["action"]=="eliminarValorConf"){
+		//print_r($_POST);
+		$objModeloUsuarios->eliminarValorConfiguracion($_POST["id"],$_POST["nvoValor"]);
 	}
 	if($_POST["action"]=="formAgergarConf"){
 		$objModeloUsuarios->formAgergarConf();

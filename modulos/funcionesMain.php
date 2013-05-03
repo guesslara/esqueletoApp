@@ -71,10 +71,13 @@
 		if($sitioActivo[0]=="Si"){
 ?>
 		<div id="desv">
-        	<div id="msgManttoProg">            
-	        <div style="margin:10px; padding:30px; font-size:14px;"><img src="../img/Alert1.png" border="0">&nbsp;<?=$sitioActivo[1];?></div>
-            </div>
-        </div>
+			<div id="msgManttoProg">            
+				<div style="border: 0px solid #000;margin:10px; padding:30px; font-size:14px;height: 118px;">
+					<div style="border: 0px solid #000;width: 65px;height: 90px;padding: 5px;float: left;"><img src="../img/Alert1.png" border="0"></div>
+					<div style="border: 0px solid #000;width: 75%;height: 40px;padding: 30px;float: left;"><?=$sitioActivo[1];?></div>
+				</div>
+			</div>
+		</div>
 <?		
 		}		
 	}

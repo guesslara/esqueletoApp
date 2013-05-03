@@ -59,13 +59,34 @@
 		<div id="barraOpcionesEnsamble">
 			<div class="opcionesEnsamble" onclick="" title="">Opcion 1</div>
 			<div class="opcionesEnsamble" onclick="" title="">Opcion 2</div>			
-			<div id="cargadorEmpaque" style="float:right;width:200px;height:20px;padding:5px;background:#FFF;border:1px solid #CCC;font-size:13px;text-align:right;"></div>
+			<div id="cargadorEmpaque" style="float:right;width:200px;height:20px;padding:5px;background:#FFF;border:1px solid #CCC;font-size:13px;text-align:center;">Administraci&oacute;n Sistema</div>
 		</div>
 		<div id="infoEnsamble3">			
-			<div id="listadoEmpaque" style="border:1px solid #e1e1e1;background:#fff; height:99%;width:97%;font-size:12px;margin:3px;overflow: auto;"></div>
-			<!--<div id="infoCapturaFlex" style="border:1px solid #e1e1e1;background:#fff; height:100px;width:180px;font-size:12px;text-align:left;margin:0 auto 0 auto;"></div>
-			<div id="infoEquiposIng" style="border:1px solid #e1e1e1;background:#fff; height:220px;width:180px;font-size:20px;text-align:center;margin:0 auto 0 auto;"></div>
-			<input type="hidden" id="txtOpcionFlex" name="txtOpcionFlex" value="" />-->
+			<div id="listadoEmpaque" style="border:1px solid #e1e1e1;background:#fff; height:99%;width:97%;font-size:12px;margin:3px;overflow: auto;">
+				<!--contenido Nuevo-->
+				Buscar Usuario:
+				<input type="text" name="txtBuscar" id="txtBuscar" onkeyup="Buscador()" style="width:150px; font-size:14px; color:#000;"  /><br />
+				<input type="radio" name="rdbBusqueda" id="rdbBusqueda" value="nombre" checked="checked" />Por Nombre
+				<input type="radio" name="rdbBusqueda" id="rdbBusqueda" value="usuario" />Por usuario
+				<div style="height: 15px;padding: 5px;border: 1px solid #CCC;background: #CCC;">Usuarios:</div>
+				<div style="height: 18px;padding: 5px;margin: 5px;border: 1px solid #CCC;width: 92%;"><a href="javascript:nuevoUsuario()" style="text-decoration: none;color: #333;">Agregar Usuario</a></div>
+				<div style="height: 18px;padding: 5px;margin: 5px;border: 1px solid #CCC;width: 92%;"><a href="javascript:consultarUsuarios('act','nombre')" style="text-decoration: none;color: #333;">Usuarios Activos</a></div>
+				<div style="height: 18px;padding: 5px;margin: 5px;border: 1px solid #CCC;width: 92%;"><a href="javascript:consultarUsuarios('ina','nombre')" style="text-decoration: none;color: #333;">Usuarios Inactivos</a></div>				
+				<div style="height: 15px;padding: 5px;border: 1px solid #CCC;background: #CCC;">Grupos:</div>
+				<div style="height: 18px;padding: 5px;margin: 5px;border: 1px solid #CCC;width: 92%;"><a href="javascript:addGrupo()" style="text-decoration: none;color: #333;">Agregar Grupo</a></div>
+				<div style="height: 18px;padding: 5px;margin: 5px;border: 1px solid #CCC;width: 92%;"><a href="javascript:consultaGrupos()" style="text-decoration: none;color: #333;">Consultar Grupos</a></div>
+				<!--<div style="height: 15px;padding: 3px;"><a href="javascript:nuevaFuncionalidad()">Agregar Men&uacute;</a></div>
+				<div style="height: 15px;padding: 3px;margin-left: 10px;"><a href="javascript:agregarSubMenu()">Men&uacute;s:</a></div>-->
+				<div style="height: 18px;padding: 5px;margin: 5px;border: 1px solid #CCC;width: 92%;"><a href="javascript:mostrarOpcionesMenu()" style="text-decoration: none;color: #333;">Men&uacute;s:</a></div>
+				<div style="height: 18px;padding: 5px;margin: 5px;border: 1px solid #CCC;width: 92%;"><a href="javascript:verModulos()" style="text-decoration: none;color: #333;">Ver Modulos:</a></div>
+				<div style="height: 15px;padding: 5px;border: 1px solid #CCC;background: #CCC;">Configuraci&oacute;n:</div>
+				<div style="height: 18px;padding: 5px;margin: 5px;border: 1px solid #CCC;width: 92%;"><a href="javascript:manttoSistema('sitio_desactivado')" style="text-decoration: none;color: #333;">Mantenimiento del Sistema</a></div>
+				<div style="height: 18px;padding: 5px;margin: 5px;border: 1px solid #CCC;width: 92%;"><a href="javascript:controlCambios()" style="text-decoration: none;color: #333;">Agregar Actualizaciones</a></div>
+				<div style="height: 18px;padding: 5px;margin: 5px;border: 1px solid #CCC;width: 92%;"><a href="javascript:consultaAct()" style="text-decoration: none;color: #333;">Listar Actualizaciones</a></div>
+				<div style="height: 18px;padding: 5px;margin: 5px;border: 1px solid #CCC;width: 92%;"><a href="javascript:agregarConfiguracion()" style="text-decoration: none;color: #333;">Agregar Configuracion</a></div>
+				<div style="height: 18px;padding: 5px;margin: 5px;border: 1px solid #CCC;width: 92%;"><a href="javascript:configuracionesGlobales()" style="text-decoration: none;color: #333;">Configuraciones globales</a></div>							
+				<!--fin contenido Nuevo-->
+			</div>			
 		</div>
 		<div id="detalleEmpaque" class="ventanaEnsambleContenido"></div>
 		<div id="ventanaEnsambleContenido2" class="ventanaEnsambleContenido" style="display:none;"></div>
