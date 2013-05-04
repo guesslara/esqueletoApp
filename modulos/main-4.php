@@ -96,7 +96,7 @@
 .contenedorVentanaMDIApp{background: #FFF; width:99.8%; height: 99.3%; overflow:auto;border: 0px solid #ff0000;z-index: }
 #barraestado2{position: absolute;padding: 4px;bottom: 1px;height: 20px;width: 99.2%;border: 1px solid #000;background: #666;}
 #contenedorBug{position:absolute; height:26px; width:120px; z-index:2000; right:4px; font-weight:bold; border:0px solid #666; padding:4px;bottom:0px;}
-.estiloDivContenedor{padding:4px;width:93%; height:16px;background:#FFF;color:#000;font-weight:bold; margin:4px;border:1px solid #000;text-align:center;}
+.estiloDivContenedor{padding:4px;width:94%; height:16px;background:#FFF;color:#000;font-weight:bold; margin:4px;border:1px solid #000;text-align:center;}
 #frmContenedorBug{position:absolute;width:400px;height:270px;right:0px;border:1px solid #000;background:#f0f0f0;bottom:34px;display:none;font-size: 10px;}
 #divFormularioBug{background:#FFF;border:1px solid #CCC;margin:2px;width:98%;height:98%;overflow:auto;font-size: 10px;}
 #listadoActualizacionesApp{position: absolute;text-align: left;font-weight: bold;border: 0px solid #000;background: #FFF;height: 15px;padding: 3px;width: 120px;right: 257px;margin-top: 0px;}
