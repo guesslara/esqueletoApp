@@ -91,7 +91,8 @@
 .estiloMensajeModulo{float: left;border: 0px solid #ff0000;font-size: 14px;margin-top: 5px;}
 .iconoUsuarioApp{float: right;height: 32.5px; width: 32px;border: 1px solid red;margin-top: -4px;}
 .iconoUsuarioAppCerrar{float: right;height: 32.5px; width: 32px;border: 0px solid red;margin-top: -4px;text-align: center;}
-.datosUsuarioAppPrincipal{float: right;border: 0px solid #ff0000;height: 18px;padding: 8px;font-size: 12px;margin-top: -4px;}
+.datosUsuarioAppPrincipal{float: right;border: 0px solid #ff0000;height: 18px;margin-right: 10px;padding: 8px;font-size: 12px;margin-top: -4px;}
+.datosUsuarioAppPrincipal:hover{border-bottom: 1px solid #f0f0f0;cursor: pointer;}
 #datosUsuarioAppPrincipal{position: relative;border: 0px solid blue; width: 99.8%; height: 50%;}
 .contenedorVentanaMDIApp{background: #FFF; width:99.8%; height: 99.3%; overflow:auto;border: 0px solid #ff0000;z-index: }
 #barraestado2{position: absolute;padding: 4px;bottom: 1px;height: 20px;width: 99.2%;border: 1px solid #000;background: #666;}
@@ -113,7 +114,7 @@
             <div class="estiloMensajeModulo"><? echo $txtApp['appPrincipal']['msgModulo'];?></div>            
             <div class="iconoUsuarioAppCerrar"><a href="cerrar_sesion.php?<?=$SID;?>" id="" title="<?=$txtApp['appPrincipal']['cerrarSesion'];?>" ><img src="../img/shutdown1.png" border="0" width="35" height="36" /></a></div>
             <div class="iconoUsuarioApp">&nbsp;</div>
-            <div class="datosUsuarioAppPrincipal"><?=$_SESSION[$txtApp['session']['nombreUsuario']]." ".$_SESSION[$txtApp['session']['apellidoUsuario']];?></div>
+            <div class="datosUsuarioAppPrincipal" title="Ver Perfil del Usuario"><?=$_SESSION[$txtApp['session']['nombreUsuario']]." ".$_SESSION[$txtApp['session']['apellidoUsuario']];?></div>
         </div>
         <div id="menu" class="barraMenu" style="z-index: 50;height: 25px;">
 <?          $objPermisos->construyeMenuNuevo($_SESSION[$txtApp['session']['idUsuario']]);?>            
