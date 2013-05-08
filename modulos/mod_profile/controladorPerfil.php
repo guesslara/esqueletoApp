@@ -1,5 +1,6 @@
 <?php
 	include("modeloPerfil.php");
+	include("../../clases/about.php");
 	$objPerfil=new modeloPerfil();
 	
 	switch($_GET['action']){
@@ -24,6 +25,10 @@
 			$pass1=$_POST['pass1'];
 			$passAnt=$_POST['passAnt'];
 			$objPerfil->actualizaPass($idUsuario,$pass,$pass1,$passAnt); 
+		break;
+		case "acercaDe":
+			$objAbout=new aboutCompras();
+			$objAbout->about();
 		break;
 	}
 ?>

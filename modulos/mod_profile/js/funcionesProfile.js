@@ -71,3 +71,6 @@ function cambiarImagen(idUsuario){
 		ajaxApp("capaPanel","controladorPerfil.php","action=cambiarImagen&idUsuario="+idUsuario,"GET");
 	}
 }
+function acercaDe(){
+	ajaxApp("capaPanel","controladorPerfil.php","action=acercaDe","POST");
+}	

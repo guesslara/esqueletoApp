@@ -20,6 +20,45 @@
 			}
 		}//fin construct
 		
+		public function listarBugs(){
+			$sqlErrores="SELECT * FROM errores ORDER BY id DESC";
+			$resultErrores=mysql_query($sqlErrores,$this->conexion);
+			
+			if(mysql_num_rows($resultErrores)==0){
+				echo " ( 0 ) Registros encontrados en la Base de Datos.";
+			}else{
+?>
+				<br><table width="800" border="0" cellpadding="1" cellspacing="1" align="center" style="font-size:12px;">
+					<tr>
+						<td colspan="4" style="text-align:left;">Listado de Errores Reportados</td>
+					</tr>
+					<tr>
+						<td width="40" align="center" style="height:30px; background:#000000; color:#FFFFFF;">#</td>
+						<td width="50" align="center" style="height:30px;background:#000000; color:#FFFFFF;">Fecha / Hora creaci&oacute;n</td>						
+						<td width="133" align="center" style="height:30px;background:#000000; color:#FFFFFF;">Descripci&oacute;n</td>
+					</tr>                  
+<?			
+				while($rowGrupos=mysql_fetch_array($resultErrores)){					
+?>
+					<tr>
+						<td align="center" style="height:25px; border-bottom:1px solid #CCCCCC; border-right:1px solid #CCCCCC; border-left:1px solid #CCC;"><?=$rowGrupos['id'];?></td>
+						<td align="center" style="height:25px; border-bottom:1px solid #CCCCCC; border-right:1px solid #CCCCCC;"><?=$rowGrupos['fecha']." ".$rowGrupos["hora"];?></td>						
+						<td align="left" style="height:25px; border-bottom:1px solid #CCCCCC; border-right:1px solid #CCCCCC;">
+						<div style="height:auto; overflow:auto;">
+<?
+						echo $rowGrupos["des"];
+?>
+						</div>
+						</td>
+					</tr>
+<?					
+				}
+?>
+			</table>
+<?
+			}			
+		}
+		
 		function eliminaMenu($idMenu){
 			$sqlDelSubMenu="DELETE FROM gruposmods WHERE id = '".$idMenu."'";
 			$resDelSubMenu=mysql_query($sqlDelSubMenu,$this->conexion);

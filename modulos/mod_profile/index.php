@@ -1,14 +1,19 @@
 <?
 	session_start();
-	if(!isset($_SESSION["id_usuario_nx"])){
+	include("../../includes/txtApp.php");
+	include("../../includes/config.inc.php");
+	/*echo "<pre>";
+	print_r($_SESSION);
+	echo "</pre>";
+	exit;*/
+	if(!isset($_SESSION[$txtApp['session']['idUsuario']])){
 		header("Location: ../../acceso.php");
 		exit;
 	}
-	include("../../includes/txtApp.php");
-	include("../../includes/config.inc.php");
+	
 	//se evalua la lonfgitud del no nomina
-	$nomina=$_SESSION['nomina_nx'];
-	$foto=strlen($_SESSION['nomina_nx']);
+	$nomina=$_SESSION[$txtApp['session']['nominaUsuario']];
+	$foto=strlen($_SESSION[$txtApp['session']['nominaUsuario']]);
 	switch($foto){
 		case 1:
 			$foto="000".$nomina;
@@ -43,7 +48,7 @@ html,document,body{margin:0;height:100%; width:100%;position:absolute;}
 #titulosPerfil{font-size:16px; color:#06F; margin:10px 0px 10px 5px; width:97%; text-align:right;}
 #titulosPerfil  .enlacesPerfil{font-family:Verdana, Geneva, sans-serif; font-size:12px; color:#06F; margin:10px; width:90%; text-align:right;}
 #titulosPerfil  .enlacesPerfil:hover{ color:#0099FF; cursor:pointer;}
-#contenedorImagen{height:160px; width:200px; border:1px solid #CCC; background:#FFF; text-align:center;}
+#contenedorImagen{height:260px; width:200px; border:1px solid #CCC; background:#FFF; text-align:center;}
 #contenedorImagen .imagenPerfil{margin-top:9px;}
 .tituloDetallePerfil{font-size:12px; margin-bottom:10px; margin-left:25px;}
 .detalleTextoPerfil{font-size:10px; margin:5px 5px 10px 45px;font-weight:bold;}

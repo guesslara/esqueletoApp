@@ -50,7 +50,7 @@
 			$eMenu="";
 			$elementos=$this->verificaPermisos($idUsuario);
 			$elementos=str_replace("|",",",$elementos);
-			echo $sqlMenuUsuario="SELECT modulo,ruta,rutaimg,numeroMenu,pertenece_a_menu,rutaMenuSub,moduloSubMenu FROM gruposmods WHERE id in (".$elementos.") AND pertenece_a='Menu' ORDER BY numeroMenu";
+			$sqlMenuUsuario="SELECT modulo,ruta,rutaimg,numeroMenu,pertenece_a_menu,rutaMenuSub,moduloSubMenu FROM gruposmods WHERE id in (".$elementos.") AND pertenece_a='Menu' ORDER BY numeroMenu";
 			$resultMenuUsuario=mysql_query($sqlMenuUsuario,$this->conexion);			
 			while($rowMenuUsuario=mysql_fetch_array($resultMenuUsuario)){				
 ?>
@@ -89,7 +89,7 @@
 			$submenuTitulo=array();
 			//consulta para extraer los modulos
 			foreach($elementosMnuP as $valorSubMenu){
-				$sqlSubMenu="SELECT * FROM submenu INNER JOIN gruposmods ON submenu.id_menu = gruposmods.id WHERE submenu.id = '".$valorSubMenu."'";
+				$sqlSubMenu="SELECT * FROM submenu INNER JOIN gruposmods ON submenu.id_menu = gruposmods.id WHERE submenu.id = '".$valorSubMenu."'";				
 				$resSubMenu=mysql_query($sqlSubMenu,$this->conexion);
 				while($rowSubMenu=mysql_fetch_array($resSubMenu)){					
 					if(!in_array($rowSubMenu["modulo"],$menuTitulo)){
@@ -102,7 +102,7 @@
 			}
 			unset($menuTitulo);
 			$menuTitulo=array();
-			$sqlNombresMenu="SELECT * FROM gruposmods where modulo in (".$valores.") ORDER BY numeroMenu";
+			$sqlNombresMenu="SELECT * FROM gruposmods where modulo in (".$valores.") ORDER BY numeroMenu";			
 			$resNombresMenu=mysql_query($sqlNombresMenu,$this->conexion);
 			while($rowNombresMenu=mysql_fetch_array($resNombresMenu)){
 				array_push($menuTitulo,$rowNombresMenu["modulo"]);
@@ -111,11 +111,11 @@
 				echo "
 				<ul>
 					<li class='nivel1'><a href='#' class='nivel1'>".$nombreMenuTitulo."</a>";
-				$sqlIdTitulo="SELECT id FROM gruposmods WHERE modulo='".$nombreMenuTitulo."'";
+				$sqlIdTitulo="SELECT id FROM gruposmods WHERE modulo='".$nombreMenuTitulo."'";				
 				$resIdTitulo=mysql_query($sqlIdTitulo,$this->conexion);
 				$rowIdTitulo=mysql_fetch_array($resIdTitulo);
 				//otro sql
-				$sqlSubMenu1="SELECT * FROM submenu WHERE id_menu='".$rowIdTitulo["id"]."'";
+				$sqlSubMenu1="SELECT * FROM submenu WHERE id_menu='".$rowIdTitulo["id"]."'";				
 				$resSubMenu1=mysql_query($sqlSubMenu1,$this->conexion);
 				echo "<ul class='nivel2'>";
 				while($rowSubMenu1=mysql_fetch_array($resSubMenu1)){

@@ -302,4 +302,7 @@ if($_GET['action']=="cambioStatusAct"){
 	if($_POST["action"]=="eliminaMenu"){
 		$objModeloUsuarios->eliminaMenu($_POST["idMenu"]);
 	}
+	if($_POST["action"]=="listarBugs"){		
+		$objModeloUsuarios->listarBugs();
+	}
 ?>

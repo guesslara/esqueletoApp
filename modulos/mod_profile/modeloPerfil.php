@@ -120,29 +120,28 @@
 			<div style="margin:10px;">
 				<div style="font-size:16px; color:#06F; margin:10px 10px 20px 10px; font-weight:bold;"><?=$resPerfil['nombre']." ".$resPerfil['apaterno'];?></div>
 				<hr color="#CCCCCC" /><br />
-                <fieldset class="estiloFieldet"><legend class="tituloDatosPerfil">Personal</legend>
-	                <!--<div class="tituloDetallePerfil">Nombre / Apellidos</div>
+				<fieldset class="estiloFieldet" style="width: 450px;background: #f0f0f0;border: 1px solid #CCC;"><legend class="tituloDatosPerfil">Personal</legend>
+				<!--<div class="tituloDetallePerfil">Nombre / Apellidos</div>
 					<div class="detalleTextoPerfil"><?=$resPerfil['nombre']." ".$resPerfil['apaterno'];?></div>-->
-                    <div class="tituloDetallePerfil">No. Empleado</div>
+					<div class="tituloDetallePerfil">No. Empleado</div>
 					<div class="detalleTextoPerfil"><?=$resPerfil['nomina'];?></div>
-                    <div class="tituloDetallePerfil">Sexo</div>
+					<div class="tituloDetallePerfil">Sexo</div>
 					<div class="detalleTextoPerfil"><?=$sexo;?></div>	
-                </fieldset>
-                <fieldset class="estiloFieldet"><legend class="tituloDatosPerfil">Sistema</legend>
-	                <div class="tituloDetallePerfil">Usuario en el Sistema</div>
+				</fieldset>
+				<fieldset class="estiloFieldet" style="width: 450px;background: #f0f0f0;border: 1px solid #CCC;"><legend class="tituloDatosPerfil">Sistema</legend>
+					<div class="tituloDetallePerfil">Usuario en el Sistema</div>
 					<div class="detalleTextoPerfil"><?=$resPerfil['usuario'];?></div>
 					<div class="tituloDetallePerfil">Grupo 1</div>
 					<div class="detalleTextoPerfil"><?=$nombreGrupo[$resPerfil['grupo']-1];?></div>
-                    <div class="tituloDetallePerfil">Grupo 2</div>
+					<div class="tituloDetallePerfil">Grupo 2</div>
 					<div class="detalleTextoPerfil"><?=$nombreGrupo[$resPerfil['grupo2']-1];?></div>
-                </fieldset>
-                <fieldset class="estiloFieldet"><legend class="tituloDatosPerfil">Status</legend>
-                	<div class="tituloDetallePerfil">Status</div>
-					<div class="detalleTextoPerfil"><?=$activo;?></div>
-                    <div class="tituloDetallePerfil">Observaciones</div>
-					<div class="detalleTextoPerfil"><?=$resPerfil['obs'];?></div>
 				</fieldset>
-							
+				<fieldset class="estiloFieldet" style="width: 450px;background: #f0f0f0;border: 1px solid #CCC;"><legend class="tituloDatosPerfil">Status</legend>
+					<div class="tituloDetallePerfil">Status</div>
+					<div class="detalleTextoPerfil"><?=$activo;?></div>
+					<div class="tituloDetallePerfil">Observaciones</div>
+					<div class="detalleTextoPerfil"><?=$resPerfil['obs'];?></div>
+				</fieldset>							
 			</div>
 <?		
 		}

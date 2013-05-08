@@ -225,3 +225,7 @@ function enviarInfo(){
 		alert("Escriba una descripcion breve de su problema.");	
 	}	
 }
+function mostrarPerfilUsuario(){
+	//alert("Perfil");
+	ajaxApp("cargaPerfil","funcionesMain.php","action=verPerfil","POST");
+}

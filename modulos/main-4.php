@@ -109,12 +109,13 @@
 .estiloDivDerPCompleta{margin-top: 5px;margin-left: 4px;font-weight: bold;float: left;}
 </style>
 <body>
+    <div id="cargaPerfil"></div>
     <div id="contenedorAppMain">
         <div id="barraHerramientasUsuario">
             <div class="estiloMensajeModulo"><? echo $txtApp['appPrincipal']['msgModulo'];?></div>            
             <div class="iconoUsuarioAppCerrar"><a href="cerrar_sesion.php?<?=$SID;?>" id="" title="<?=$txtApp['appPrincipal']['cerrarSesion'];?>" ><img src="../img/shutdown1.png" border="0" width="35" height="36" /></a></div>
             <div class="iconoUsuarioApp">&nbsp;</div>
-            <div class="datosUsuarioAppPrincipal" title="Ver Perfil del Usuario"><?=$_SESSION[$txtApp['session']['nombreUsuario']]." ".$_SESSION[$txtApp['session']['apellidoUsuario']];?></div>
+            <div class="datosUsuarioAppPrincipal" onclick="mostrarPerfilUsuario()" title="Ver Perfil del Usuario"><?=$_SESSION[$txtApp['session']['nombreUsuario']]." ".$_SESSION[$txtApp['session']['apellidoUsuario']];?></div>
         </div>
         <div id="menu" class="barraMenu" style="z-index: 50;height: 25px;">
 <?          $objPermisos->construyeMenuNuevo($_SESSION[$txtApp['session']['idUsuario']]);?>            

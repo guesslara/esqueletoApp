@@ -712,3 +712,6 @@ function eliminarMenu(id,modulo){
 		ajaxApp("divSubMenu","controladorUsuarios.php","action=eliminaMenu&idMenu="+id,"POST");		
 	}
 }
+function listarBugs(){
+	ajaxApp("detalleUsuarios","controladorUsuarios.php","action=listarBugs","POST");
+}

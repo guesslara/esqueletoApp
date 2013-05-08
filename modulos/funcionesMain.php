@@ -13,6 +13,11 @@
 		verificaActNuevas();	
 	}
 	
+	if($_POST["action"]=="verPerfil"){
+		echo "<script type='text/javascript'> contenedorVentana.location.href='mod_profile/index.php'; </script>";
+	}
+	
+	
 	function guardarInfoBug($mensaje){
 		$sqlBug="INSERT INTO errores (fecha,hora,des) values ('".date("Y-m-d")."','".date("H:i:s")."','".$mensaje."')";
 		$resBug=mysql_query($sqlBug,conectarBd());
