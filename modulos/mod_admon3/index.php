@@ -1,3 +1,13 @@
+<?php
+	session_start();	
+	/*echo "<pre>";
+	print_r($_SESSION);
+	echo "</pre>";*/
+	if($_SESSION[$txtApp['session']['nivelUsuario']]!=0){
+		echo "<script type='text/javascript'> alert('Ha intentado entrar a una zona protegida, sus datos seran ENVIADOS'); </script>";
+		//falta la opcion para poder mandar un email con la especificacion de la infiltracion
+	}
+?>
 <script type="text/javascript" src="../../clases/jquery-1.3.2.min.js" ></script>
 <script type="text/javascript"  src="js/funciones.js" ></script>
 <script type="text/javascript">

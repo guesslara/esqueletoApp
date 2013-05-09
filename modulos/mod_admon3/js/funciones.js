@@ -650,7 +650,7 @@ function guardarSubMenu(){
 		ajaxApp("divGuardadoSubMenu","controladorUsuarios.php","action=guardarSubMenu&idElemento="+txtIdElemento+"&txtNombreSubMenu="+txtNombreSubMenu+"&txtRuta="+txtRuta+"&cboStatusSubmenu="+cboStatusSubmenu,"POST");
 	}
 }
-function modificarSubmenu(id){
+function modificarSubmenu(id){	
 	ajaxApp("divSubMenu","controladorUsuarios.php","action=modificarSubMenu&id="+id,"POST");
 }
 function guardarSubMenuActualizacion(){

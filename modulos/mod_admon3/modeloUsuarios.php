@@ -313,7 +313,7 @@
 ?>
 						<div style="height: 15px;padding: 5px;">							
 							==><a href="#" title="Eliminar Menu" onclick="eliminaSubmenu('<?=$rowsub['id']?>','<?=$rowsub["nombreSubMenu"];?>')" style="color: blue;"><img src="../../img/icon_delete.gif" border="0" /></a>&nbsp;
-							<a href="#" title="Modificar Submen&uacute;" onclick="agregarItemSubMenu('<?=$row["id"];?>')" style="font-size: 12px;"><?=$rowsub["nombreSubMenu"]?></a>
+							<a href="#" title="Modificar Submen&uacute;" onclick="modificarSubmenu('<?=$rowsub["id"];?>')" style="font-size: 12px;"><?=$rowsub["nombreSubMenu"]?></a>
 						</div>
 <?
 					}

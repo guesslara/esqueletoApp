@@ -115,10 +115,10 @@
 				$resIdTitulo=mysql_query($sqlIdTitulo,$this->conexion);
 				$rowIdTitulo=mysql_fetch_array($resIdTitulo);
 				//otro sql
-				$sqlSubMenu1="SELECT * FROM submenu WHERE id_menu='".$rowIdTitulo["id"]."'";				
+				$sqlSubMenu1="SELECT * FROM submenu WHERE id_menu='".$rowIdTitulo["id"]."'"; 				
 				$resSubMenu1=mysql_query($sqlSubMenu1,$this->conexion);
 				echo "<ul class='nivel2'>";
-				while($rowSubMenu1=mysql_fetch_array($resSubMenu1)){
+				while($rowSubMenu1=mysql_fetch_array($resSubMenu1)){					
 					if(in_array($rowSubMenu1["id"],$elementosMnuP)){
 						echo "<li><a href='".$rowSubMenu1["rutaSubMenu"]."' target='contenedorVentana'>".$rowSubMenu1["nombreSubMenu"]."</a></li>";
 						

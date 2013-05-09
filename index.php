@@ -1,17 +1,5 @@
-<?	
-	/*include("includes/conf_inicial.php");	
-	$sitioActivo=verificaMantto();
-	if($sitioActivo[0]=="No"){*/
-		//header('Location:modulos/mod_login/index.php');
-		//exit;
-	/*}else{
-		mensaje($sitioActivo[1]);
-	}*/
-	/*
-	 *Verificacion del directorio para realizar la instalacion de la Aplicacion
-	*/
-	if(is_dir("setup")){
-		//echo "<script type='text/javascript'> alert('Existe el directorio'); </script>";
+<?php	
+	if(is_dir("setup")){	
 		header("Location: setup/index.php");
 		exit;
 	}else{
@@ -33,10 +21,6 @@ body{font-family:Verdana, Geneva, sans-serif; font-size:14px; margin:15px; paddi
 </head>
 
 <body>
-<?php
-	function mensaje($comentario){
-		echo "<div id='msgMantenimiento'><div style='height:20px; color:#FFFFFF; background:#000000; font-size:12px;'><div style='float:left;'>IQe Sisco Nextel Refurbish</div></div><div style='margin:4px; background:#FFFFFF; overflow:auto; height:220px;'><br /><span style='margin-left:10px;'><img src='img/alert.png' border='0' />&nbsp;$comentario</span></div></div>";
-	}
-?>
+
 </body>
 </html>
