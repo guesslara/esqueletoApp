@@ -2,11 +2,22 @@
 	/*include("includes/conf_inicial.php");	
 	$sitioActivo=verificaMantto();
 	if($sitioActivo[0]=="No"){*/
-		header('Location:modulos/mod_login/index.php');
-		exit;
+		//header('Location:modulos/mod_login/index.php');
+		//exit;
 	/*}else{
 		mensaje($sitioActivo[1]);
 	}*/
+	/*
+	 *Verificacion del directorio para realizar la instalacion de la Aplicacion
+	*/
+	if(is_dir("setup")){
+		//echo "<script type='text/javascript'> alert('Existe el directorio'); </script>";
+		header("Location: setup/index.php");
+		exit;
+	}else{
+		header("Location:modulos/mod_login/index.php");
+		exit;
+	}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
