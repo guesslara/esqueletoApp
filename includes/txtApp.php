@@ -1,32 +1,32 @@
 <?php
 	$txtApp = array();
 	//variables para la sesion
-	$txtApp['session']['name'] = "controlEsqueleto";
-	$txtApp['session']['register'] = "controlEsqueleto";
-	$txtApp['session']['nivelUsuario'] = "nivelUsuario";
-	$txtApp['session']['loginUsuario'] = "loginUsuario";
-	$txtApp['session']['passwordUsuario'] = "passwordUsuario";
-	$txtApp['session']['idUsuario'] = "idUsuario";
-	$txtApp['session']['nombreUsuario'] = "nombreUsuario";
-	$txtApp['session']['apellidoUsuario'] = "apellidoUsuario";
-	$txtApp['session']['origenSistemaUsuario'] = "origenSistemaUsuario";
-	$txtApp['session']['origenSistemaUsuarioNombre'] = "origenControlEsqueleto";
-	$txtApp['session']['cambiarPassUsuario'] = "cambiarPassUsuario";
-	$txtApp['session']['sexoUsuario'] = "sexoUsuario";
-	$txtApp['session']['nominaUsuario'] = "nominaUsuario";
+	$txtApp['session']['name'] = "controlComercialTWG";
+	$txtApp['session']['register'] = "controlComercialTWG";
+	$txtApp['session']['nivelUsuario'] = "nivelUsuarioComercialTWG";
+	$txtApp['session']['loginUsuario'] = "loginUsuarioComercialTWG";
+	$txtApp['session']['passwordUsuario'] = "passwordUsuarioComercialTWG";
+	$txtApp['session']['idUsuario'] = "idUsuarioComercialTWG";
+	$txtApp['session']['nombreUsuario'] = "nombreUsuarioComercialTWG";
+	$txtApp['session']['apellidoUsuario'] = "apellidoUsuarioComercialTWG";
+	$txtApp['session']['origenSistemaUsuario'] = "origenSistemaUsuarioComercialTWG";
+	$txtApp['session']['origenSistemaUsuarioNombre'] = "origenControlComercialTWG";
+	$txtApp['session']['cambiarPassUsuario'] = "cambiarPassUsuarioComercialTWG";
+	$txtApp['session']['sexoUsuario'] = "sexoUsuarioComercialTWG";
+	$txtApp['session']['nominaUsuario'] = "nominaUsuarioComercialTWG";
 	$txtApp['session']['idProyectoSeleccionado'] = "idProyectoSeleccionado";
 	//login de usuarios
-	$txtApp['login']['tituloAppTitle'] = "[ App - Desarrollo ]";
-	$txtApp['login']['tituloAppPrincipal'] = "IQe. Sisco - [ Nombre App ]";
+	$txtApp['login']['tituloAppTitle'] = "Reporte TWG";
+	$txtApp['login']['tituloAppPrincipal'] = "IQe. Sisco - Reporte TWG";
 	$txtApp['login']['tituloUsuario'] = "Usuario:";
 	$txtApp['login']['tituloPass'] = "Password:";
 	$txtApp['login']['btnApp'] = "Entrar";
 	$txtApp['login']['tituloAbout'] = "Acerca de...";
 	$txtApp['login']['pieLogin'] = "Acceso Intranet IQelectronics International ".date("Y");
 	//App GUI Principal
-	$txtApp['appPrincipal']['tituloPrincipalApp'] = "[ Titulo App Modulo ]";
+	$txtApp['appPrincipal']['tituloPrincipalApp'] = "Reporte TWG";
 	$txtApp['appPrincipal']['cerrarSesion'] = "Cerrar Sesi&oacute;n";
-	$txtApp['appPrincipal']['msgModulo'] = "[ Titulo App Modulo ]";
+	$txtApp['appPrincipal']['msgModulo'] = "Reporte TWG";
 	$txtApp['appPrincipal']['msgActualizaciones'] = "Actualizaciones";
 	$txtApp['appPrincipal']['msgReportarError'] = "Reportar Problema";
 	$txtApp['appPrincipal']['msgBarraCarga'] = "Listo";
